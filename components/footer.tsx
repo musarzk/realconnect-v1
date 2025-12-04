@@ -10,7 +10,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div>
             <div className="mb-4">
-              <Image src="/logo.png" alt="SmartReal Logo" width={200} height={60} className="h-10 sm:h-14 w-auto object-contain" />
+              <Image src="/logo.png" alt="SmartReal Logo" width={200} height={60} className="h-8 sm:h-14 w-auto object-contain" />
             </div>
             <p className="text-sm text-gray-600 font-medium">Global real estate automation platform powered by AI.</p>
           </div>
