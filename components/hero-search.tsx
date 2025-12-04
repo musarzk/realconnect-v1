@@ -81,7 +81,7 @@ export function HeroSearch({ onSearch }: HeroSearchProps) {
         className={cn(
           "w-full flex flex-col items-center justify-center text-white overflow-hidden transition-all duration-500 ease-in-out z-40 shadow-md",
           isCompact 
-            ? "fixed top-[68px] left-0 right-0 h-[80px] bg-primary/95 backdrop-blur-md" 
+            ? "fixed top-[64px] left-0 right-0 h-[80px] bg-primary/95 backdrop-blur-md" 
             : "relative h-[300px] sm:h-[400px]"
         )}
       >
