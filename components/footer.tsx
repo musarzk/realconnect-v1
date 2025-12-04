@@ -10,7 +10,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div>
             <div className="mb-4">
-              <Image src="/logo.png" alt="SmartReal Logo" width={200} height={60} className="h-14 w-auto object-contain" />
+              <Image src="/logo.png" alt="SmartReal Logo" width={200} height={60} className="h-10 sm:h-14 w-auto object-contain" />
             </div>
             <p className="text-sm text-gray-600 font-medium">Global real estate automation platform powered by AI.</p>
           </div>
@@ -89,15 +89,15 @@ export function Footer() {
         <hr className="my-8 border-gray-400 opacity-30" />
 
         <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-600">
-          <p>&copy; 2025 SmartReal. All rights reserved.</p>
-          <div className="flex gap-4 mt-4 md:mt-0">
-            <Link href="#" className="hover:text-foreground">
+          <p className="text-center md:text-left">&copy; 2025 SmartReal. All rights reserved.</p>
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mt-3 md:mt-0 text-xs sm:text-sm">
+            <Link href="#" className="hover:text-foreground whitespace-nowrap">
               Privacy Policy
             </Link>
-            <Link href="#" className="hover:text-foreground">
+            <Link href="#" className="hover:text-foreground whitespace-nowrap">
               Terms of Service
             </Link>
-            <Link href="#" className="hover:text-foreground">
+            <Link href="#" className="hover:text-foreground whitespace-nowrap">
               Cookie Policy
             </Link>
           </div>

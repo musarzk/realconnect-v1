@@ -555,7 +555,7 @@ export default function SearchPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Find Your Perfect Property</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 leading-tight">Find Your Perfect Property</h1>
           <p className="text-muted-foreground">
             Showing {totalItems} results
           </p>
