@@ -649,10 +649,10 @@ export default function SearchPage() {
                 <button onClick={() => setViewMode("list")} className={`p-2 rounded-lg ${viewMode === "list" ? "bg-primary text-primary-foreground" : "bg-secondary"}`}><List className="h-4 w-4" /></button>
               </div>
 
-              <div className="flex items-center gap-2">
-                <label className="text-sm font-medium">Sort by:</label>
-                <div className="relative">
-                  <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="px-3 py-2 border border-gray-400 rounded-lg bg-background appearance-none pr-8">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                <label className="text-xs sm:text-sm font-medium whitespace-nowrap">Sort by:</label>
+                <div className="relative w-full sm:w-auto">
+                  <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className="w-full sm:w-auto px-3 py-2 border border-gray-400 rounded-lg bg-background appearance-none pr-8 text-sm">
                     <option value="featured">Featured</option>
                     <option value="priceLow">Price: Low to High</option>
                     <option value="priceHigh">Price: High to Low</option>

@@ -110,12 +110,12 @@ export function HeroSearch({ onSearch }: HeroSearchProps) {
           {/* Title & Tabs - Hide in compact mode */}
           <div className={cn(
             "transition-all duration-300 overflow-hidden",
-            isCompact ? "h-0 opacity-0 w-0" : "h-auto opacity-100 w-full mb-6"
+            isCompact ? "h-0 opacity-0 w-0" : "h-auto opacity-100 w-full mb-4 sm:mb-6"
           )}>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-2 drop-shadow-md">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-1 sm:mb-2 drop-shadow-md leading-tight">
               AI-powered Real Estate site 
             </h1>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-8 drop-shadow-md">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 md:mb-8 drop-shadow-md leading-tight">
                Trusted by industry players
             </h1>
 

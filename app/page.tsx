@@ -343,13 +343,13 @@ export default function SearchPage() {
                 </button>
               </div>
 
-              <div className="flex items-center gap-2">
-                <label className="text-sm font-medium">Sort by:</label>
-                <div className="relative">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                <label className="text-xs sm:text-sm font-medium whitespace-nowrap">Sort by:</label>
+                <div className="relative w-full sm:w-auto">
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="px-3 py-2 rounded-lg bg-gray-200 border-none appearance-none  focus:outline-none pr-8"
+                    className="w-full sm:w-auto px-3 py-2 rounded-lg bg-gray-200 border-none appearance-none focus:outline-none pr-8 text-sm"
                   >
                     <option value="featured">Featured</option>
                     <option value="priceLow">Price: Low to High</option>
