@@ -1,0 +1,907 @@
+﻿
+> my-v0-project@0.1.0 build
+> next build
+
+node.exe : [baseline-b
+rowser-mapping] The 
+data in this module 
+is over two months 
+old.  To ensure 
+accurate Baseline 
+data, please update: 
+`npm i baseline-browse
+r-mapping@latest -D`
+At line:1 char:1
++ & "C:\Program Files\
+nodejs/node.exe" "C:\U
+sers\MUCER\AppData\Roa
+ming\ ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: ([baseline-   
+ brows...ping@late    
+st -D`:String) []    
+, RemoteException
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+   Γû▓ Next.js 16.0.3 (Turbopack)
+   - Environments: .env.local
+
+ ΓÜá The "middleware" 
+file convention is 
+deprecated. Please 
+use "proxy" instead. 
+Learn more: https://ne
+xtjs.org/docs/messages
+/middleware-to-proxy
+   Creating an optimized production build ...
+[baseline-browser-mapp
+ing] The data in this 
+module is over two 
+months old.  To 
+ensure accurate 
+Baseline data, please 
+update: `npm i baselin
+e-browser-mapping@late
+st -D`
+
+> Build error occurred
+Error: Turbopack 
+build failed with 9 
+errors:
+./app/api/contacts/rou
+te.ts:2:1
+Module not found: 
+Can't resolve 
+'../../../lib/mongodb'
+[0m [90m 1 |[39m 
+[36mimport[39m { 
+type [33mNextRequest
+[39m[33m,[39m [33mN
+extResponse[39m } 
+[36mfrom[39m [32m"n
+ext/server"[39m
+[31m[1m>[22m[39m[
+90m 2 |[39m 
+[36mimport[39m { 
+getDatabase } 
+[36mfrom[39m [32m".
+./../../lib/mongodb"[
+39m
+ [90m   |[39m [31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m
+ [90m 3 |[39m 
+[36mimport[39m { 
+getMessagesCollection 
+} [36mfrom[39m [32m
+"../lib/dbv0"[39m
+ [90m 4 |[39m 
+[36mimport[39m { 
+sendEmail } 
+[36mfrom[39m [32m".
+./../../lib/email"[39
+m
+ [90m 5 |[39m[0m
+
+
+
+https://nextjs.org/doc
+s/messages/module-not-
+found
+
+
+./app/api/health/route
+.ts:2:1
+Module not found: 
+Can't resolve 
+'../../../lib/mongodb'
+[0m [90m 1 |[39m 
+[36mimport[39m { 
+type [33mNextRequest
+[39m[33m,[39m [33mN
+extResponse[39m } 
+[36mfrom[39m [32m"n
+ext/server"[39m
+[31m[1m>[22m[39m[
+90m 2 |[39m 
+[36mimport[39m 
+clientPromise 
+[36mfrom[39m [32m".
+./../../lib/mongodb"[
+39m
+ [90m   |[39m [31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m
+ [90m 3 |[39m
+ [90m 4 |[39m 
+[36mexport[39m 
+[36masync[39m 
+[36mfunction[39m [3
+3mGET[39m(request[33
+m:[39m [33mNextReque
+st[39m) {
+ [90m 5 |[39m   
+[36mtry[39m {[0m
+
+
+
+https://nextjs.org/doc
+s/messages/module-not-
+found
+
+
+./app/api/investor-por
+tfolios/route.ts:2:1
+Module not found: 
+Can't resolve 
+'../../../lib/mongodb'
+[0m [90m 1 |[39m 
+[36mimport[39m { 
+type [33mNextRequest
+[39m[33m,[39m [33mN
+extResponse[39m } 
+[36mfrom[39m [32m"n
+ext/server"[39m
+[31m[1m>[22m[39m[
+90m 2 |[39m 
+[36mimport[39m { 
+getDatabase } 
+[36mfrom[39m [32m".
+./../../lib/mongodb"[
+39m
+ [90m   |[39m [31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m
+ [90m 3 |[39m
+ [90m 4 |[39m 
+[36mexport[39m 
+[36masync[39m 
+[36mfunction[39m [3
+3mGET[39m(request[33
+m:[39m [33mNextReque
+st[39m) {
+ [90m 5 |[39m   
+[36mtry[39m {[0m
+
+
+
+https://nextjs.org/doc
+s/messages/module-not-
+found
+
+
+./app/api/analytics/pr
+operties/route.ts:2:1
+Module not found: 
+Can't resolve 
+'../../lib/dbv0'
+[0m [90m 1 |[39m 
+[36mimport[39m { 
+type [33mNextRequest
+[39m[33m,[39m [33mN
+extResponse[39m } 
+[36mfrom[39m [32m"n
+ext/server"[39m
+[31m[1m>[22m[39m[
+90m 2 |[39m 
+[36mimport[39m { get
+PropertiesCollection 
+} [36mfrom[39m [32m
+"../../lib/dbv0"[39m
+ [90m   |[39m [31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m
+ [90m 3 |[39m
+ [90m 4 |[39m 
+[36mexport[39m 
+[36masync[39m 
+[36mfunction[39m [3
+3mGET[39m(request[33
+m:[39m [33mNextReque
+st[39m) {
+ [90m 5 |[39m   
+[36mtry[39m {[0m
+
+
+
+https://nextjs.org/doc
+s/messages/module-not-
+found
+
+
+./app/api/auth/signup/
+route.ts:2:1
+Module not found: 
+Can't resolve 
+'../../lib/dbv0'
+[0m [90m 1 |[39m 
+[36mimport[39m { 
+type [33mNextRequest
+[39m[33m,[39m [33mN
+extResponse[39m } 
+[36mfrom[39m [32m"n
+ext/server"[39m
+[31m[1m>[22m[39m[
+90m 2 |[39m 
+[36mimport[39m { 
+getUsersCollection } 
+[36mfrom[39m [32m".
+./../lib/dbv0"[39m
+ [90m   |[39m [31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m
+ [90m 3 |[39m 
+[36mimport[39m { has
+hPassword[33m,[39m 
+generateToken } 
+[36mfrom[39m [32m".
+./../lib/authv0"[39m
+ [90m 4 |[39m 
+[36mimport[39m { z 
+} [36mfrom[39m 
+[32m"zod"[39m
+ [90m 5 |[39m[0m
+
+
+
+https://nextjs.org/doc
+s/messages/module-not-
+found
+
+
+./app/api/bookings/[id
+]/route.ts:3:1
+Module not found: 
+Can't resolve 
+'../../lib/dbv0'
+[0m [90m 1 |[39m 
+[90m// app/api/bookin
+gs/[id]/route.ts[39m
+ [90m 2 |[39m 
+[36mimport[39m { 
+type [33mNextRequest
+[39m[33m,[39m [33mN
+extResponse[39m } 
+[36mfrom[39m [32m"n
+ext/server"[39m
+[31m[1m>[22m[39m[
+90m 3 |[39m 
+[36mimport[39m { 
+getBookingsCollection 
+} [36mfrom[39m [32m
+"../../lib/dbv0"[39m
+ [90m   |[39m [31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m
+ [90m 4 |[39m 
+[36mimport[39m { 
+verifyAuth } 
+[36mfrom[39m [32m".
+./../lib/middleware"[
+39m
+ [90m 5 |[39m 
+[36mimport[39m { 
+sendEmail } 
+[36mfrom[39m [32m"@
+/lib/email"[39m
+ [90m 6 |[39m[0m
+
+
+
+https://nextjs.org/doc
+s/messages/module-not-
+found
+
+
+./app/api/properties/a
+pproval/route.ts:2:1
+Module not found: 
+Can't resolve 
+'../../lib/dbv0'
+[0m [90m 1 |[39m 
+[36mimport[39m { 
+type [33mNextRequest
+[39m[33m,[39m [33mN
+extResponse[39m } 
+[36mfrom[39m [32m"n
+ext/server"[39m
+[31m[1m>[22m[39m[
+90m 2 |[39m 
+[36mimport[39m { get
+PropertiesCollection 
+} [36mfrom[39m [32m
+"../../lib/dbv0"[39m
+ [90m   |[39m [31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m
+ [90m 3 |[39m 
+[36mimport[39m { 
+[33mObjectId[39m } 
+[36mfrom[39m 
+[32m"mongodb"[39m
+ [90m 4 |[39m
+ [90m 5 |[39m 
+[36mexport[39m 
+[36masync[39m 
+[36mfunction[39m [3
+3mPATCH[39m(request[
+33m:[39m [33mNextReq
+uest[39m) {[0m
+
+
+
+https://nextjs.org/doc
+s/messages/module-not-
+found
+
+
+./app/api/users/[id]/r
+oute.ts:2:1
+Module not found: 
+Can't resolve 
+'../../lib/dbv0'
+[0m [90m 1 |[39m 
+[36mimport[39m { 
+type [33mNextRequest
+[39m[33m,[39m [33mN
+extResponse[39m } 
+[36mfrom[39m [32m"n
+ext/server"[39m
+[31m[1m>[22m[39m[
+90m 2 |[39m 
+[36mimport[39m { 
+getUsersCollection } 
+[36mfrom[39m [32m".
+./../lib/dbv0"[39m
+ [90m   |[39m [31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m
+ [90m 3 |[39m 
+[36mimport[39m { 
+verifyAuth } 
+[36mfrom[39m [32m".
+./../lib/middleware"[
+39m
+ [90m 4 |[39m 
+[36mimport[39m { 
+[33mObjectId[39m } 
+[36mfrom[39m 
+[32m"mongodb"[39m
+ [90m 5 |[39m[0m
+
+
+
+https://nextjs.org/doc
+s/messages/module-not-
+found
+
+
+./app/api/contacts/rou
+te.ts:3:1
+Module not found: 
+Can't resolve 
+'../lib/dbv0'
+[0m [90m 1 |[39m 
+[36mimport[39m { 
+type [33mNextRequest
+[39m[33m,[39m [33mN
+extResponse[39m } 
+[36mfrom[39m [32m"n
+ext/server"[39m
+ [90m 2 |[39m 
+[36mimport[39m { 
+getDatabase } 
+[36mfrom[39m [32m".
+./../../lib/mongodb"[
+39m
+[31m[1m>[22m[39m[
+90m 3 |[39m 
+[36mimport[39m { 
+getMessagesCollection 
+} [36mfrom[39m [32m
+"../lib/dbv0"[39m
+ [90m   |[39m [31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m
+ [90m 4 |[39m 
+[36mimport[39m { 
+sendEmail } 
+[36mfrom[39m [32m".
+./../../lib/email"[39
+m
+ [90m 5 |[39m
+ [90m 6 |[39m 
+[36mexport[39m 
+[36masync[39m 
+[36mfunction[39m [3
+3mPOST[39m(request[3
+3m:[39m [33mNextRequ
+est[39m) {[0m
+
+
+
+https://nextjs.org/doc
+s/messages/module-not-
+found
+
+
+    at <unknown> (./ap
+p/api/contacts/route.t
+s:2:1)
+    at <unknown> (http
+s://nextjs.org/docs/me
+ssages/module-not-foun
+d)
+    at <unknown> (./ap
+p/api/health/route.ts:
+2:1)
+    at <unknown> (http
+s://nextjs.org/docs/me
+ssages/module-not-foun
+d)
+    at <unknown> (./ap
+p/api/investor-portfol
+ios/route.ts:2:1)
+    at <unknown> (http
+s://nextjs.org/docs/me
+ssages/module-not-foun
+d)
+    at <unknown> (./ap
+p/api/analytics/proper
+ties/route.ts:2:1)
+    at <unknown> (http
+s://nextjs.org/docs/me
+ssages/module-not-foun
+d)
+    at <unknown> (./ap
+p/api/auth/signup/rout
+e.ts:2:1)
+    at <unknown> (http
+s://nextjs.org/docs/me
+ssages/module-not-foun
+d)
+    at <unknown> (./ap
+p/api/bookings/[id]/ro
+ute.ts:3:1)
+    at <unknown> (http
+s://nextjs.org/docs/me
+ssages/module-not-foun
+d)
+    at <unknown> (./ap
+p/api/properties/appro
+val/route.ts:2:1)
+    at <unknown> (http
+s://nextjs.org/docs/me
+ssages/module-not-foun
+d)
+    at <unknown> (./ap
+p/api/users/[id]/route
+.ts:2:1)
+    at <unknown> (http
+s://nextjs.org/docs/me
+ssages/module-not-foun
+d)
+    at <unknown> (./ap
+p/api/contacts/route.t
+s:3:1)
+    at <unknown> (http
+s://nextjs.org/docs/me
+ssages/module-not-foun
+d)
