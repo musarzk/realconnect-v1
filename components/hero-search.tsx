@@ -110,17 +110,17 @@ export function HeroSearch({ onSearch }: HeroSearchProps) {
           {/* Title & Tabs - Hide in compact mode */}
           <div className={cn(
             "transition-all duration-300 overflow-hidden",
-            isCompact ? "h-0 opacity-0 w-0" : "h-auto opacity-100 w-full mb-4 sm:mb-6"
+            isCompact ? "h-0 opacity-0 w-0" : "h-auto opacity-100 w-full mb-4 sm:mb-6 pt-4 sm:pt-0"
           )}>
-            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-1 sm:mb-2 drop-shadow-md leading-tight">
+            <h1 className="text-xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-1 sm:mb-2 drop-shadow-md leading-[1.1] sm:leading-tight">
               AI-powered Real Estate site 
             </h1>
-            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 md:mb-8 drop-shadow-md leading-tight">
+            <h1 className="text-xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-6 md:mb-8 drop-shadow-md leading-[1.1] sm:leading-tight">
                Trusted by industry players
             </h1>
 
             {/* Navigation Tabs */}
-            <div className="flex flex-wrap justify-center gap-6 mb-6 text-sm sm:text-base font-medium">
+            <div className="flex flex-wrap justify-center gap-3 sm:gap-6 mb-4 sm:mb-6 text-xs sm:text-base font-medium">
               {[
                 { id: "buy", label: "Buy" },
                 { id: "rent", label: "Rent" },
@@ -133,7 +133,7 @@ export function HeroSearch({ onSearch }: HeroSearchProps) {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
                   className={cn(
-                    "relative pb-1 transition-colors hover:text-white/80",
+                    "relative pb-0.5 sm:pb-1 transition-colors hover:text-white/80 leading-none",
                     activeTab === tab.id
                       ? "text-white after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-white"
                       : "text-white/90"
