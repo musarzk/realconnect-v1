@@ -671,7 +671,7 @@ export default function SearchPage() {
               <Card className="p-12 text-center">No properties found.</Card>
             ) : (
               <>
-                <div className={viewMode === "grid" ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-max" : "space-y-4"}>
+                <div className={viewMode === "grid" ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-max" : "space-y-6"}>
                   {paginated.map((p) => (
                     <PropertyCard
                       key={p._id ?? p.id}

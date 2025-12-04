@@ -58,7 +58,7 @@ export function PropertyCard({
         <div
           className={`
             relative bg-muted overflow-hidden 
-            ${viewMode === "list" ? "w-full sm:w-40 md:w-48 h-48 sm:h-full flex-shrink-0" : "h-40 w-full"}
+            ${viewMode === "list" ? "w-full sm:w-40 md:w-48 h-full flex-shrink-0" : "h-40 w-full"}
             !p-0 !m-0 
             
             
