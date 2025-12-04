@@ -456,7 +456,7 @@ export default function PropertyDetailClient({
 
                 {/* Price */}
                 <div className="border-b border-border pb-6">
-                  <p className="text-5xl font-bold text-primary mb-2">
+                  <p className="text-3xl md:text-5xl font-bold text-primary mb-2">
                     {(property.price ?? 0) >= 1000000000 
                       ? `₦${((property.price ?? 0) / 1000000000).toFixed(1)}B`
                       : `₦${(property.price ?? 0).toLocaleString()}`
