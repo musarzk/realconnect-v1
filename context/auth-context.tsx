@@ -34,7 +34,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const loadSession = async () => {
       try {
         const storedToken = localStorage.getItem("token")
+        const tokenTimestamp = localStorage.getItem("tokenTimestamp")
+
         if (storedToken) {
+          // Check if token is expired based on timestamp (24 hours max)
+          const MAX_SESSION_AGE = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+          if (tokenTimestamp) {
+            const loginTime = parseInt(tokenTimestamp, 10);
+            const now = Date.now();
+            const tokenAge = now - loginTime;
+
+            // If token is older than 24 hours, clear it and don't attempt to load session
+            if (tokenAge > MAX_SESSION_AGE) {
+              localStorage.removeItem("token");
+              localStorage.removeItem("tokenTimestamp");
+              setToken(null);
+              setIsLoading(false);
+              return;
+            }
+          }
+
           setToken(storedToken)
           const response = await fetch("/api/auth/me", {
             headers: { Authorization: `Bearer ${storedToken}` },
@@ -52,6 +72,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             })
           } else {
             localStorage.removeItem("token")
+            localStorage.removeItem("tokenTimestamp")
             setToken(null)
           }
         }
@@ -76,6 +97,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null)
     setToken(null)
     localStorage.removeItem("token")
+    localStorage.removeItem("tokenTimestamp")
   }, [])
 
   // Auto-logout on inactivity
@@ -128,6 +150,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setToken(data.token)
     setUser(data.user)
     localStorage.setItem("token", data.token)
+    localStorage.setItem("tokenTimestamp", Date.now().toString())
   }, [])
 
   const login = useCallback(async (email: string, password: string) => {
@@ -146,6 +169,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setToken(data.token)
     setUser(data.user)
     localStorage.setItem("token", data.token)
+    localStorage.setItem("tokenTimestamp", Date.now().toString())
   }, [])
 
 
