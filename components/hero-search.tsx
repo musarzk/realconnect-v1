@@ -155,7 +155,7 @@ export function HeroSearch({ onSearch }: HeroSearchProps) {
                 type="text"
                 placeholder="Address, School, City, Zip or Neighborhood"
                 className={cn(
-                  "w-full pl-6 pr-24 rounded-full bg-white text-gray-900 placeholder:text-gray-500 border-none shadow-lg focus-visible:ring-0 text-base transition-all duration-300",
+                  "w-full pl-6 pr-24 rounded-full bg-white text-gray-900 placeholder:text-gray-600 border-none shadow-lg focus-visible:ring-0 text-base transition-all duration-300",
                   isCompact ? "h-12" : "h-14"
                 )}
                 value={searchValue}
@@ -166,7 +166,7 @@ export function HeroSearch({ onSearch }: HeroSearchProps) {
                   type="button"
                   onClick={handleClear}
                   className={cn(
-                    "absolute p-2 text-gray-400 hover:text-gray-600 transition-colors",
+                    "absolute p-2 text-gray-600 hover:text-gray-700 transition-colors",
                     isCompact ? "right-12" : "right-14"
                   )}
                 >

@@ -212,22 +212,22 @@ export default function AdminReports() {
         <Card className="p-6">
           <div className="text-gray-600 text-sm">Total Properties</div>
           <div className="text-2xl font-bold mt-2 truncate" title={String(data.summary.totalProperties)}>{data.summary.totalProperties}</div>
-          <div className="text-xs text-gray-500 mt-2">{data.summary.totalApproved} approved</div>
+          <div className="text-xs text-gray-600 mt-2">{data.summary.totalApproved} approved</div>
         </Card>
         <Card className="p-6">
           <div className="text-gray-600 text-sm">Pending Approval</div>
           <div className="text-2xl font-bold text-yellow-600 mt-2 truncate" title={String(data.summary.totalPending)}>{data.summary.totalPending}</div>
-          <div className="text-xs text-gray-500 mt-2">{Math.round((data.summary.totalPending / data.summary.totalProperties) * 100) || 0}% of total</div>
+          <div className="text-xs text-gray-600 mt-2">{Math.round((data.summary.totalPending / data.summary.totalProperties) * 100) || 0}% of total</div>
         </Card>
         <Card className="p-6">
           <div className="text-gray-600 text-sm">Total Revenue</div>
           <div className="text-2xl font-bold mt-2 truncate" title={`₦${(data.summary.totalRevenue || 0).toLocaleString()}`}>₦{(data.summary.totalRevenue || 0).toLocaleString()}</div>
-          <div className="text-xs text-gray-500 mt-2">From 5% commission</div>
+          <div className="text-xs text-gray-600 mt-2">From 5% commission</div>
         </Card>
         <Card className="p-6">
           <div className="text-gray-600 text-sm">Avg Property Price</div>
           <div className="text-2xl font-bold mt-2 truncate" title={`₦${(data.summary.avgPrice || 0).toLocaleString()}`}>₦{(data.summary.avgPrice || 0).toLocaleString()}</div>
-          <div className="text-xs text-gray-500 mt-2">Across all listings</div>
+          <div className="text-xs text-gray-600 mt-2">Across all listings</div>
         </Card>
       </div>
 

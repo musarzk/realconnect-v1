@@ -215,10 +215,10 @@ export const Navigation = (): JSX.Element => {
               <Link
                 href={roleLink.href}
                 className={cn(
-                  "text-sm transition-colors py-1 border-b-2",
+                  "text-sm transition-colors py-1 border-b-2 font-medium",
                   isActive(roleLink.href)
-                    ? "border-primary text-primary font-medium"
-                    : "border-transparent text-gray-600 hover:text-primary"
+                    ? "border-primary text-primary"
+                    : "border-transparent text-gray-700 hover:text-primary"
                 )}
               >
                 {isAuthenticated && firstName ? `Hi, ${firstName}` : roleLink.label}
@@ -229,10 +229,10 @@ export const Navigation = (): JSX.Element => {
                   <Link
                     href="/investor-portal"
                     className={cn(
-                      "text-sm transition-colors py-1 border-b-2",
+                      "text-sm transition-colors py-1 border-b-2 font-medium",
                       isActive("/investor-portal")
-                        ? "border-primary text-primary font-medium"
-                        : "border-transparent text-gray-600 hover:text-primary"
+                        ? "border-primary text-primary"
+                        : "border-transparent text-gray-700 hover:text-primary"
                     )}
                   >
                     Investors
@@ -240,10 +240,10 @@ export const Navigation = (): JSX.Element => {
                   <Link
                     href="/contact"
                     className={cn(
-                      "text-sm transition-colors py-1 border-b-2",
+                      "text-sm transition-colors py-1 border-b-2 font-medium",
                       isActive("/contact")
-                        ? "border-primary text-primary font-medium"
-                        : "border-transparent text-gray-600 hover:text-primary"
+                        ? "border-primary text-primary"
+                        : "border-transparent text-gray-700 hover:text-primary"
                     )}
                   >
                     Contact
@@ -277,7 +277,7 @@ export const Navigation = (): JSX.Element => {
         <div className="md:hidden">
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 text-gray-600 hover:text-primary focus:outline-none"
+            className="p-2 text-gray-700 hover:text-primary focus:outline-none"
           >
             {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
@@ -295,7 +295,7 @@ export const Navigation = (): JSX.Element => {
                   "block text-base font-medium px-3 py-2 rounded-md transition-colors",
                   isActive(roleLink.href)
                     ? "bg-primary/10 text-primary"
-                    : "text-gray-700 hover:text-primary hover:bg-gray-50"
+                    : "text-gray-800 hover:text-primary hover:bg-gray-50"
                 )}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
@@ -310,7 +310,7 @@ export const Navigation = (): JSX.Element => {
                       "block text-base font-medium px-3 py-2 rounded-md transition-colors",
                       isActive("/investor-portal")
                         ? "bg-primary/10 text-primary"
-                        : "text-gray-700 hover:text-primary hover:bg-gray-50"
+                        : "text-gray-800 hover:text-primary hover:bg-gray-50"
                     )}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
@@ -322,7 +322,7 @@ export const Navigation = (): JSX.Element => {
                       "block text-base font-medium px-3 py-2 rounded-md transition-colors",
                       isActive("/contact")
                         ? "bg-primary/10 text-primary"
-                        : "text-gray-700 hover:text-primary hover:bg-gray-50"
+                        : "text-gray-800 hover:text-primary hover:bg-gray-50"
                     )}
                     onClick={() => setIsMobileMenuOpen(false)}
                   >

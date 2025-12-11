@@ -355,7 +355,7 @@ export default function AdminUsers() {
           </thead>
           <tbody>
             {users.filter(u => filterStatus === "all" || u.status === filterStatus).length === 0 ? (
-              <tr><td colSpan={8} className="text-center py-8 text-gray-500">No users found</td></tr>
+              <tr><td colSpan={8} className="text-center py-8 text-gray-600">No users found</td></tr>
             ) : (
               users.filter(u => filterStatus === "all" || u.status === filterStatus).map((user) => {
                 const isCurrentUser = currentUserId === user._id

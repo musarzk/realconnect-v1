@@ -3,6 +3,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { MapPin, Home, Maximize2 } from "lucide-react";
 
@@ -65,10 +66,12 @@ export function PropertyCard({
             
           `}
         >
-          <img
+          <Image
             src={image || "/placeholder.svg"}
             alt={title}
-            className="w-full h-full object-cover block !p-0 !m-0 rounded-t-none"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover !p-0 !m-0 rounded-t-none"
           />
 
           {/* SOLD Badge - Prominent diagonal ribbon */}
