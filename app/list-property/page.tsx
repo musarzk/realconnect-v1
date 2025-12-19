@@ -504,7 +504,7 @@ import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { Upload, Check } from "lucide-react";
+import { Upload, Check, X } from "lucide-react";
 
 /**
  * Client ListPropertyPage
@@ -630,6 +630,20 @@ export default function ListPropertyPage() {
       });
   };
 
+  const handleRemoveImage = (index: number) => {
+    setFormData((prev) => {
+      const newImages = prev.images.filter((_, i) => i !== index);
+      // Update preview if the removed image was the preview
+      if (imagePreview === prev.images[index]) {
+        setImagePreview(newImages.length > 0 ? newImages[0] : "");
+      }
+      return {
+        ...prev,
+        images: newImages,
+      };
+    });
+  };
+
   // Build payload to match your CreatePropertySchema
   function buildPayload() {
     // Convert propertyType from UI to schema 'type'
@@ -659,6 +673,7 @@ export default function ListPropertyPage() {
       beds: formData.bedrooms ? Number(formData.bedrooms) : undefined,
       baths: formData.bathrooms ? Number(formData.bathrooms) : undefined,
       sqft: formData.squareFeet ? Number(formData.squareFeet) : undefined,
+      yearBuilt: formData.yearBuilt ? Number(formData.yearBuilt) : undefined,
       images: formData.images ?? [],
       amenities,
       contact: {
@@ -929,8 +944,16 @@ export default function ListPropertyPage() {
                 {formData.images.length > 0 && (
                   <div className="mt-4 grid grid-cols-3 gap-2">
                     {formData.images.map((src, idx) => (
-                      <div key={idx} className="h-20 w-full overflow-hidden rounded">
+                      <div key={idx} className="relative h-20 w-full overflow-hidden rounded group border border-border">
                         <img src={src} alt={`img-${idx}`} className="h-full w-full object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveImage(idx)}
+                          className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm hover:bg-destructive/90"
+                          title="Remove image"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
                       </div>
                     ))}
                   </div>

@@ -313,7 +313,7 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
                                             verified={property.verified ?? false}
                                             rating={property.rating ?? 4.5}
                                             viewMode={viewMode}
-                                            type={property.type === "rent" ? "rent" : "sale"}
+                                            type={property.listingType === "rent" ? "rent" : "sale"}
                                             propertyType={property.propertyType}
                                             ownerAvatar={property.ownerAvatar}
                                         />

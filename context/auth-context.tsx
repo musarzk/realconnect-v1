@@ -62,18 +62,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
           if (response.ok) {
             const data = await response.json()
-            setUser({
-              id: data._id,
-              email: data.email,
-              firstName: data.firstName,
-              lastName: data.lastName,
-              role: data.role,
-              approved: data.approved,
-            })
+            
+            if (data.authenticated && data.user) {
+              setUser({
+                id: data.user.id,
+                email: data.user.email,
+                firstName: data.user.firstName,
+                lastName: data.user.lastName,
+                role: data.user.role,
+                approved: data.user.approved,
+              })
+            } else {
+              // Not authenticated or invalid response format
+              localStorage.removeItem("token")
+              localStorage.removeItem("tokenTimestamp")
+              setToken(null)
+              setUser(null)
+            }
           } else {
             localStorage.removeItem("token")
             localStorage.removeItem("tokenTimestamp")
             setToken(null)
+            setUser(null)
           }
         }
       } catch (error) {

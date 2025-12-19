@@ -165,15 +165,22 @@ export default function InvestmentPlanPage() {
 
             const data = await response.json();
 
+            if (!response.ok) {
+                console.error("Payment initiation failed:", data);
+                showModal("error", "Payment Failed", data.message || data.error || "Failed to initiate payment. Please try again.");
+                setLoading(false);
+                return;
+            }
+
             if (data.link) {
                 window.location.href = data.link;
             } else {
-                showModal("error", "Payment Failed", "Failed to initiate payment. Please try again.");
+                showModal("error", "Payment Failed", "Failed to get payment link from server.");
                 setLoading(false);
             }
         } catch (error) {
             console.error("Investment error:", error);
-            showModal("error", "Error", "An error occurred. Please try again.");
+            showModal("error", "Connection Error", "An unexpected error occurred. Please check your connection and try again.");
             setLoading(false);
         }
     };
