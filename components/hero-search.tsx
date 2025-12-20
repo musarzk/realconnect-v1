@@ -153,7 +153,7 @@ export function HeroSearch({ onSearch }: HeroSearchProps) {
             <div className="relative flex items-center">
               <Input
                 type="text"
-                placeholder="Address, School, City, Zip or Neighborhood"
+                placeholder="Address, City or Neighborhood"
                 className={cn(
                   "w-full pl-6 pr-24 rounded-full bg-white text-gray-900 placeholder:text-gray-600 border-none shadow-lg focus-visible:ring-0 text-base transition-all duration-300",
                   isCompact ? "h-12" : "h-14"

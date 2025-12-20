@@ -12,7 +12,7 @@
 //           <Home className="h-6 w-6 text-primary" />
 //           <span className="font-bold text-lg">SmartReal</span>
 //         </Link>
-
+//
 //         <div className="flex items-center gap-6">
 //           <Link href="/search" className="text-sm hover:text-primary transition-colors">
 //             Browse Properties
@@ -23,7 +23,7 @@
 //           <Link href="/contact" className="text-sm hover:text-primary transition-colors">
 //             Contact
 //           </Link>
-
+//
 //           <div className="flex gap-2">
 //             <Link href="/login">
 //               <Button variant="outline" size="sm">
@@ -47,7 +47,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import {  Menu, X } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -103,82 +104,14 @@ export const Navigation = (): JSX.Element => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const [loading, setLoading] = useState<boolean>(true);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [role, setRole] = useState<Role>(null);
-  const [firstName, setFirstName] = useState<string | null>(null);
+  const { user, isAuthenticated, logout } = useAuth();
+
+  const role = user?.role ?? null;
+  const firstName = user?.firstName ?? null;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    let mounted = true;
-
-    async function detectAuth() {
-      // 1) localStorage token (fast)
-      try {
-        const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
-        if (token) {
-          const payload = decodeJwtPayload(token);
-          if (payload && mounted) {
-            setIsAuthenticated(true);
-            setRole((payload.role as Role) ?? null);
-            setFirstName((payload.firstName as string) ?? null);
-            setLoading(false);
-            return;
-          } else {
-            try {
-              localStorage.removeItem("token");
-            } catch { }
-          }
-        }
-      } catch {
-        // continue to server fallback
-      }
-
-      // 2) server cookie fallback (/api/auth/me) — send credentials to include httpOnly cookie
-      try {
-        const res = await fetch("/api/auth/me", { method: "GET", credentials: "include" });
-        if (!mounted) return;
-        if (res.ok) {
-          const json = (await res.json()) as MeResponse;
-          if (json?.authenticated && json.user) {
-            setIsAuthenticated(true);
-            setRole((json.user.role as Role) ?? null);
-            setFirstName(json.user.firstName ?? null);
-            setLoading(false);
-            return;
-          }
-        }
-      } catch {
-        // ignore network issues
-      }
-
-      if (mounted) {
-        setIsAuthenticated(false);
-        setRole(null);
-        setFirstName(null);
-        setLoading(false);
-      }
-    }
-
-    detectAuth();
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  // Logout: call server to clear cookie and clear local storage token
   const handleLogout = async () => {
-    try {
-      await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
-    } catch {
-      // ignore
-    }
-    try {
-      localStorage.removeItem("token");
-    } catch { }
-    setIsAuthenticated(false);
-    setRole(null);
-    setFirstName(null);
+    await logout();
     router.push("/");
   };
 
@@ -212,17 +145,31 @@ export const Navigation = (): JSX.Element => {
         <div className="hidden md:flex items-center gap-6">
           {!isAdminArea && (
             <>
-              <Link
-                href={roleLink.href}
-                className={cn(
-                  "text-sm transition-colors py-1 border-b-2 font-medium",
-                  isActive(roleLink.href)
-                    ? "border-primary text-primary"
-                    : "border-transparent text-gray-700 hover:text-primary"
-                )}
-              >
-                {isAuthenticated && firstName ? `Hi, ${firstName}` : roleLink.label}
-              </Link>
+              {isAuthenticated && firstName ? (
+                <Link
+                  href={role === "admin" ? "/admin" : "/dashboard"}
+                  className={cn(
+                    "text-sm transition-colors py-1 border-b-2 font-medium",
+                    isActive(role === "admin" ? "/admin" : "/dashboard")
+                      ? "border-primary text-primary"
+                      : "border-transparent text-gray-700 hover:text-primary"
+                  )}
+                >
+                  Hi, {firstName}
+                </Link>
+              ) : (
+                <Link
+                  href={roleLink.href}
+                  className={cn(
+                    "text-sm transition-colors py-1 border-b-2 font-medium",
+                    isActive(roleLink.href)
+                      ? "border-primary text-primary"
+                      : "border-transparent text-gray-700 hover:text-primary"
+                  )}
+                >
+                  {roleLink.label}
+                </Link>
+              )}
 
               {role !== "investor" && (
                 <>
@@ -289,18 +236,33 @@ export const Navigation = (): JSX.Element => {
         <div className="md:hidden bg-white border-t border-gray-200 px-4 pt-2 pb-4 space-y-3 shadow-lg">
           {!isAdminArea && (
             <>
-              <Link
-                href={roleLink.href}
-                className={cn(
-                  "block text-base font-medium px-3 py-2 rounded-md transition-colors",
-                  isActive(roleLink.href)
-                    ? "bg-primary/10 text-primary"
-                    : "text-gray-800 hover:text-primary hover:bg-gray-50"
-                )}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {isAuthenticated && firstName ? `Hi, ${firstName}` : roleLink.label}
-              </Link>
+              {isAuthenticated && firstName ? (
+                <Link
+                  href={role === "admin" ? "/admin" : "/dashboard"}
+                  className={cn(
+                    "block text-base font-medium px-3 py-2 rounded-md transition-colors",
+                    isActive(role === "admin" ? "/admin" : "/dashboard")
+                      ? "bg-primary/10 text-primary"
+                      : "text-gray-800 hover:text-primary hover:bg-gray-50"
+                  )}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Hi, {firstName}
+                </Link>
+              ) : (
+                <Link
+                  href={roleLink.href}
+                  className={cn(
+                    "block text-base font-medium px-3 py-2 rounded-md transition-colors",
+                    isActive(roleLink.href)
+                      ? "bg-primary/10 text-primary"
+                      : "text-gray-800 hover:text-primary hover:bg-gray-50"
+                  )}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {roleLink.label}
+                </Link>
+              )}
 
               {role !== "investor" && (
                 <>
