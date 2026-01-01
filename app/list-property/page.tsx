@@ -949,10 +949,10 @@ export default function ListPropertyPage() {
                         <button
                           type="button"
                           onClick={() => handleRemoveImage(idx)}
-                          className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm hover:bg-destructive/90"
+                          className="absolute top-1 right-1 bg-destructive text-whiterounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm hover:bg-destructive/90"
                           title="Remove image"
                         >
-                          <X className="h-3 w-3" />
+                          <X className="h-5 w-5" />
                         </button>
                       </div>
                     ))}

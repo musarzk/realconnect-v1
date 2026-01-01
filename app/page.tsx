@@ -60,6 +60,7 @@ export default async function SearchPage(props: {
     const docs = await coll
       .find({ status: "approved" })
       .sort({ createdAt: -1 })
+      .limit(24)
       .toArray();
 
     // 2. Populate Owners

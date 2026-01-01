@@ -102,9 +102,11 @@ export function PropertyCard({
           {/* Owner Avatar */}
           {ownerAvatar && (
             <div className="absolute bottom-12 right-4 z-10">
-              <img
+              <Image
                 src={ownerAvatar}
                 alt="Owner"
+                width={48}
+                height={48}
                 className="w-12 h-12 rounded-full border-2 border-white shadow-md object-cover"
               />
             </div>

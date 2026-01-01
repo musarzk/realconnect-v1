@@ -44,10 +44,9 @@ interface HomeSearchClientProps {
 
 export function HomeSearchClient({ initialProperties, initialFilters }: HomeSearchClientProps) {
     // State initialization
-    const [properties] = useState<Property[]>(initialProperties);
-    // Note: For a fully server-driven search, we'd navigate on filter change. 
-    // For now preserving exact behavior of original page (client-side filter of the initial load),
-    // but initial load is now instant.
+    const [properties, setProperties] = useState<Property[]>(initialProperties);
+    const [isInitialLoad, setIsInitialLoad] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
     const [sortBy, setSortBy] = useState("featured");
@@ -63,15 +62,48 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
         propertyType: initialFilters?.propertyType || "all",
     });
 
+    // Fetch properties from API when filters change
+    const fetchProperties = async (currentFilters: typeof filters) => {
+        setIsLoading(true);
+        try {
+            const params = new URLSearchParams();
+            if (currentFilters.location) params.append("location", currentFilters.location);
+            if (currentFilters.type !== "all") params.append("type", currentFilters.type);
+            if (currentFilters.propertyType !== "all") params.append("propertyType", currentFilters.propertyType);
+            if (currentFilters.beds) params.append("beds", currentFilters.beds);
+            if (currentFilters.priceMin) params.append("priceMin", currentFilters.priceMin);
+            if (currentFilters.priceMax) params.append("priceMax", currentFilters.priceMax);
+            
+            // We fetch a bit more than itemsPerPage to allow some client-side sorting/filtering if needed,
+            // but primarily we'll rely on server-side filters.
+            params.append("limit", "100"); 
+
+            const res = await fetch(`/api/properties?${params.toString()}`);
+            if (res.ok) {
+                const data = await res.json();
+                setProperties(data.properties || []);
+            }
+        } catch (error) {
+            console.error("Failed to fetch properties:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const handleFilterChange = (newFilters: typeof filters) => {
         setFilters(newFilters);
         setCurrentPage(1);
+        setIsInitialLoad(false);
+        fetchProperties(newFilters);
     };
 
-    // Filter + sort logic (client-side for now, preserving original behavior but faster initial load)
+    // Filter + sort logic (client-side for the current fetched batch)
     const filteredAndSortedProperties = useMemo(() => {
         const list = Array.isArray(properties) ? properties : [];
 
+        // If we haven't changed filters yet, use the initial properties (already filtered by "approved" status on server)
+        // If filters changed, we've already fetched the filtered list from the server.
+        // We still apply client-side filtering as a safety net or for any filters not yet implemented on server.
         const result = list.filter((property) => {
             const matchesLocation =
                 !filters.location || (property.location ?? "").toLowerCase().includes(filters.location.toLowerCase());
@@ -122,10 +154,18 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
             />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 pt-12 flex flex-col items-center">
-                <div className="mb-8 text-center w-full">
+                <div className="mb-8 text-center w-full relative">
                     <p className="text-xl font-semibold text-foreground">
                         Showing {filteredAndSortedProperties.length} approved properties
+                        {isInitialLoad && initialProperties.length === 24 && (
+                            <span className="text-xs text-muted-foreground ml-2">(Initial load limit)</span>
+                        )}
                     </p>
+                    {isLoading && (
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2">
+                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary"></div>
+                        </div>
+                    )}
                 </div>
 
                 <div className="w-full grid grid-cols-1 lg:grid-cols-4 gap-8">
