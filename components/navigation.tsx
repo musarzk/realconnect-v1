@@ -143,33 +143,26 @@ export const Navigation = (): JSX.Element => {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-6">
+          <Link
+            href="/"
+            className={cn(
+              "text-sm transition-colors py-1 border-b-2 font-medium",
+              isActive("/") ? "border-primary text-primary" : "border-transparent text-gray-700 hover:text-primary"
+            )}
+          >
+            Home
+          </Link>
           {!isAdminArea && (
             <>
-              {isAuthenticated && firstName ? (
-                <Link
-                  href={role === "admin" ? "/admin" : "/dashboard"}
-                  className={cn(
-                    "text-sm transition-colors py-1 border-b-2 font-medium",
-                    isActive(role === "admin" ? "/admin" : "/dashboard")
-                      ? "border-primary text-primary"
-                      : "border-transparent text-gray-700 hover:text-primary"
-                  )}
-                >
-                  Hi, {firstName}
-                </Link>
-              ) : (
-                <Link
-                  href={roleLink.href}
-                  className={cn(
-                    "text-sm transition-colors py-1 border-b-2 font-medium",
-                    isActive(roleLink.href)
-                      ? "border-primary text-primary"
-                      : "border-transparent text-gray-700 hover:text-primary"
-                  )}
-                >
-                  {roleLink.label}
-                </Link>
-              )}
+              <Link
+                href="/search"
+                className={cn(
+                  "text-sm transition-colors py-1 border-b-2 font-medium",
+                  isActive("/search") ? "border-primary text-primary" : "border-transparent text-gray-700 hover:text-primary"
+                )}
+              >
+                Browse Properties
+              </Link>
 
               {role !== "investor" && (
                 <>
@@ -184,18 +177,34 @@ export const Navigation = (): JSX.Element => {
                   >
                     Investors
                   </Link>
-                  <Link
-                    href="/contact"
-                    className={cn(
-                      "text-sm transition-colors py-1 border-b-2 font-medium",
-                      isActive("/contact")
-                        ? "border-primary text-primary"
-                        : "border-transparent text-gray-700 hover:text-primary"
-                    )}
-                  >
-                    Contact
-                  </Link>
+                  {role !== "admin" && (
+                    <Link
+                      href="/contact"
+                      className={cn(
+                        "text-sm transition-colors py-1 border-b-2 font-medium",
+                        isActive("/contact")
+                          ? "border-primary text-primary"
+                          : "border-transparent text-gray-700 hover:text-primary"
+                      )}
+                    >
+                      Contact
+                    </Link>
+                  )}
                 </>
+              )}
+
+              {isAuthenticated && (
+                <Link
+                  href={role === "admin" ? "/admin" : "/dashboard"}
+                  className={cn(
+                    "text-sm transition-colors py-1 border-b-2 font-medium",
+                    isActive(role === "admin" ? "/admin" : "/dashboard")
+                      ? "border-primary text-primary"
+                      : "border-transparent text-gray-700 hover:text-primary"
+                  )}
+                >
+                  {firstName ? `Hi, ${firstName}` : "Dashboard"}
+                </Link>
               )}
             </>
           )}
@@ -234,36 +243,28 @@ export const Navigation = (): JSX.Element => {
       {/* Mobile Menu Dropdown */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white border-t border-gray-200 px-4 pt-2 pb-4 space-y-3 shadow-lg">
+          <Link
+            href="/"
+            className={cn(
+              "block text-base font-medium px-3 py-2 rounded-md transition-colors",
+              isActive("/") ? "bg-primary/10 text-primary" : "text-gray-800 hover:text-primary hover:bg-gray-50"
+            )}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Home
+          </Link>
           {!isAdminArea && (
             <>
-              {isAuthenticated && firstName ? (
-                <Link
-                  href={role === "admin" ? "/admin" : "/dashboard"}
-                  className={cn(
-                    "block text-base font-medium px-3 py-2 rounded-md transition-colors",
-                    isActive(role === "admin" ? "/admin" : "/dashboard")
-                      ? "bg-primary/10 text-primary"
-                      : "text-gray-800 hover:text-primary hover:bg-gray-50"
-                  )}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Hi, {firstName}
-                </Link>
-              ) : (
-                <Link
-                  href={roleLink.href}
-                  className={cn(
-                    "block text-base font-medium px-3 py-2 rounded-md transition-colors",
-                    isActive(roleLink.href)
-                      ? "bg-primary/10 text-primary"
-                      : "text-gray-800 hover:text-primary hover:bg-gray-50"
-                  )}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {roleLink.label}
-                </Link>
-              )}
-
+              <Link
+                href="/search"
+                className={cn(
+                  "block text-base font-medium px-3 py-2 rounded-md transition-colors",
+                  isActive("/search") ? "bg-primary/10 text-primary" : "text-gray-800 hover:text-primary hover:bg-gray-50"
+                )}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Browse Properties
+              </Link>
               {role !== "investor" && (
                 <>
                   <Link
@@ -278,19 +279,36 @@ export const Navigation = (): JSX.Element => {
                   >
                     Investors
                   </Link>
-                  <Link
-                    href="/contact"
-                    className={cn(
-                      "block text-base font-medium px-3 py-2 rounded-md transition-colors",
-                      isActive("/contact")
-                        ? "bg-primary/10 text-primary"
-                        : "text-gray-800 hover:text-primary hover:bg-gray-50"
-                    )}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Contact
-                  </Link>
+                  {role !== "admin" && (
+                    <Link
+                      href="/contact"
+                      className={cn(
+                        "block text-base font-medium px-3 py-2 rounded-md transition-colors",
+                        isActive("/contact")
+                          ? "bg-primary/10 text-primary"
+                          : "text-gray-800 hover:text-primary hover:bg-gray-50"
+                      )}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Contact
+                    </Link>
+                  )}
                 </>
+              )}
+
+              {isAuthenticated && (
+                <Link
+                  href={role === "admin" ? "/admin" : "/dashboard"}
+                  className={cn(
+                    "block text-base font-medium px-3 py-2 rounded-md transition-colors",
+                    isActive(role === "admin" ? "/admin" : "/dashboard")
+                      ? "bg-primary/10 text-primary"
+                      : "text-gray-800 hover:text-primary hover:bg-gray-50"
+                  )}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {firstName ? `Hi, ${firstName}` : "Dashboard"}
+                </Link>
               )}
             </>
           )}
