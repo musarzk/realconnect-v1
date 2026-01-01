@@ -27,7 +27,7 @@ const options: MongoClientOptions = {}
  */
 declare global {
   // attach to globalThis for dev hot-reload caching
-  var _mongoClientPromise: Promise<MongoClient> | undefined
+  var _mongoClientPromise: Promise<MongoClient> | null | undefined
 }
 
 let client: MongoClient
