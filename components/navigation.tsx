@@ -45,7 +45,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { Logo } from "@/components/logo";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
 import { Menu, X } from "lucide-react";
@@ -132,13 +132,7 @@ export const Navigation = (): JSX.Element => {
     <nav className="sticky top-0 z-50 bg-navbar backdrop-blur-30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
-          <Image
-            src="/logo.png"
-            alt="SmartReal Logo"
-            width={200}
-            height={60}
-            className="h-10 md:h-16 w-auto object-contain"
-          />
+          <Logo />
         </Link>
 
         {/* Desktop Menu */}

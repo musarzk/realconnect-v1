@@ -7,11 +7,12 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import { z } from "zod";
+import Image from "next/image";
+import { Logo } from "@/components/logo";
 import { SuccessModal } from "@/components/success-modal";
 
 import { Eye, EyeOff } from "lucide-react";
 
-import Image from "next/image";
 
 const SignupBodySchema = z.object({
   firstName: z.string().min(1),
@@ -100,7 +101,9 @@ export default function SignupPage() {
     <div className="min-h-screen flex items-center justify-center py-12 px-4">
       <Card className="w-full max-w-md p-8">
         <div className="flex justify-center mb-6">
-          <Image src="/logo.png" alt="SmartReal Logo" width={180} height={54} className="h-14 w-auto object-contain" />
+          <Link href="/">
+            <Logo />
+          </Link>
         </div>
         <h1 className="text-3xl font-bold mb-6 text-center">Create Account</h1>
 

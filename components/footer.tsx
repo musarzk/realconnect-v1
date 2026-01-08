@@ -1,7 +1,7 @@
 import { Separator } from "@/components/ui/separator"
 import Link from "next/link"
-import Image from "next/image"
 import { Mail, Phone, MapPin } from "lucide-react"
+import { Logo } from "@/components/logo"
 
 export function Footer() {
   return (
@@ -10,7 +10,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div>
             <div className="mb-4">
-              <Image src="/logo.png" alt="SmartReal Logo" width={200} height={60} className="h-8 sm:h-14 w-auto object-contain" />
+              <Logo />
             </div>
             <p className="text-sm text-gray-700 font-medium">Global real estate automation platform powered by AI.</p>
           </div>
