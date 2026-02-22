@@ -13,8 +13,7 @@ export const metadata: Metadata = {
   description:
     "Discover properties, invest globally. AI-powered real estate platform connecting sellers, buyers, and investors.",
   
-
-  icons: {
+ icons: {
     icon: "/favicon/favicon.png",
     shortcut: "/favicon/favicon.png",
   },
