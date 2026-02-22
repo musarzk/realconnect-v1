@@ -24,7 +24,7 @@
   --secondary: oklch(0.92 0.04 60);
   --secondary-foreground: oklch(0.2 0.03 240);
   --muted: oklch(0.94 0.01 0);
-  --muted-foreground: #6b7280;
+  --muted-foreground: #4b5563;
   --accent: oklch(50.301% 0.14173 149.076);
   --accent-foreground: oklch(1 0 0);
   --destructive: #33CC33;
@@ -61,7 +61,7 @@
   --secondary: oklch(0.25 0.02 240);
   --secondary-foreground: oklch(0.95 0.01 70);
   --muted: oklch(0.25 0.01 240);
-  --muted-foreground: #6b7280;
+  --muted-foreground: #9ca3af;
   --accent: oklch(0.75 0.2 30);
   --accent-foreground: oklch(0.12 0.01 240);
   --destructive: #33CC33;
@@ -143,35 +143,37 @@
    ------------------------- */
 @layer base {
   * {
+    box-sizing: border-box;
     @apply border-border outline-ring/50;
   }
 
   /* Apply a soft faint gradient (faint orange -> faint gray -> faint golden-green).
      This is the single source-of-truth for the page background. */
-  html, body {
-    height: 100%;
-    min-height: 100%;
+  html,
+  body {
+
+    min-height: 100vh;
     margin: 0;
     padding: 0;
-    background: linear-gradient(
-      135deg,
-      /* faint soft orange */
-      rgba(211, 239, 241, 0.301) 0%,
-      rgba(255, 220, 185, 0.12) 18%,
+    background: linear-gradient(135deg,
+        /* faint soft orange */
+        rgba(211, 239, 241, 0.301) 0%,
+        rgba(255, 220, 185, 0.12) 18%,
 
-      /* faint gray */
-      rgba(191, 245, 166, 0.185) 50%,
-      rgba(245, 245, 245, 0.12) 65%,
+        /* faint gray */
+        rgba(191, 245, 166, 0.185) 50%,
+        rgba(245, 245, 245, 0.12) 65%,
 
-      /* faint golden green */
-      rgba(191, 209, 156, 0.274) 85%,
-      rgba(180, 221, 113, 0.493) 100%
-    ) fixed !important;
+        /* faint golden green */
+        rgba(191, 209, 156, 0.274) 85%,
+        rgba(180, 221, 113, 0.493) 100%) fixed !important;
     background-repeat: no-repeat;
     background-attachment: fixed !important;
     background-size: cover !important;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+    box-sizing: border-box;
   }
 
   /* Make Next.js root + common wrappers transparent so they don't hide the page background */
@@ -188,16 +190,23 @@
   }
 
   /* Ensure root children render above background */
-  #__next > *:not(script),
-  #___next > *:not(script),
-  main > * {
+  #__next>*:not(script),
+  #___next>*:not(script),
+  main>* {
     position: relative;
     z-index: 1;
     background: transparent !important;
   }
 
   /* Keep cards, popovers, sidebars, modals, toasts with their intended background */
-  .card, .ui-card, .sidebar, .popover, .modal, .toast, [data-card], [data-keep-bg] {
+  .card,
+  .ui-card,
+  .sidebar,
+  .popover,
+  .modal,
+  .toast,
+  [data-card],
+  [data-keep-bg] {
     background: var(--card) !important;
     background-color: var(--card) !important;
     z-index: 2;
@@ -208,6 +217,7 @@
    UTILITIES
    ------------------------- */
 @layer utilities {
+
   /* Override some hover backgrounds conservatively */
   [class*="hover:bg-"]:hover,
   .hover\:bg-primary:hover,

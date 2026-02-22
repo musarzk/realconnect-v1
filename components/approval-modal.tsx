@@ -59,7 +59,7 @@ export function ApprovalModal({
         </p>
 
         {!showRejectForm ? (
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <Button variant="outline" onClick={onCancel} disabled={isLoading} className="flex-1 bg-transparent">
               Cancel
             </Button>

@@ -81,7 +81,7 @@ export function HeroSearch({ onSearch }: HeroSearchProps) {
         className={cn(
           "w-full flex flex-col items-center justify-center text-white overflow-hidden transition-all duration-500 ease-in-out z-40 shadow-md",
           isCompact 
-            ? "fixed top-[68px] left-0 right-0 h-[80px] bg-primary/95 backdrop-blur-md" 
+            ? "fixed top-[64px] left-0 right-0 h-[80px] bg-primary/95 backdrop-blur-md" 
             : "relative h-[300px] sm:h-[400px]"
         )}
       >
@@ -110,17 +110,17 @@ export function HeroSearch({ onSearch }: HeroSearchProps) {
           {/* Title & Tabs - Hide in compact mode */}
           <div className={cn(
             "transition-all duration-300 overflow-hidden",
-            isCompact ? "h-0 opacity-0 w-0" : "h-auto opacity-100 w-full mb-6"
+            isCompact ? "h-0 opacity-0 w-0" : "h-auto opacity-100 w-full mb-4 sm:mb-6 pt-4 sm:pt-0"
           )}>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-2 drop-shadow-md">
+            <h1 className="text-xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-1 sm:mb-2 drop-shadow-md leading-[1.1] sm:leading-tight">
               AI-powered Real Estate site 
             </h1>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-8 drop-shadow-md">
+            <h1 className="text-xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-6 md:mb-8 drop-shadow-md leading-[1.1] sm:leading-tight">
                Trusted by industry players
             </h1>
 
             {/* Navigation Tabs */}
-            <div className="flex flex-wrap justify-center gap-6 mb-6 text-sm sm:text-base font-medium">
+            <div className="flex flex-wrap justify-center gap-3 sm:gap-6 mb-4 sm:mb-6 text-xs sm:text-base font-medium">
               {[
                 { id: "buy", label: "Buy" },
                 { id: "rent", label: "Rent" },
@@ -133,7 +133,7 @@ export function HeroSearch({ onSearch }: HeroSearchProps) {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
                   className={cn(
-                    "relative pb-1 transition-colors hover:text-white/80",
+                    "relative pb-0.5 sm:pb-1 transition-colors hover:text-white/80 leading-none",
                     activeTab === tab.id
                       ? "text-white after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-white"
                       : "text-white/90"
@@ -153,9 +153,9 @@ export function HeroSearch({ onSearch }: HeroSearchProps) {
             <div className="relative flex items-center">
               <Input
                 type="text"
-                placeholder="Address, School, City, Zip or Neighborhood"
+                placeholder="Address, City or Neighborhood"
                 className={cn(
-                  "w-full pl-6 pr-24 rounded-full bg-white text-gray-900 placeholder:text-gray-500 border-none shadow-lg focus-visible:ring-0 text-base transition-all duration-300",
+                  "w-full pl-6 pr-24 rounded-full bg-white text-gray-900 placeholder:text-gray-600 border-none shadow-lg focus-visible:ring-0 text-base transition-all duration-300",
                   isCompact ? "h-12" : "h-14"
                 )}
                 value={searchValue}
@@ -166,7 +166,7 @@ export function HeroSearch({ onSearch }: HeroSearchProps) {
                   type="button"
                   onClick={handleClear}
                   className={cn(
-                    "absolute p-2 text-gray-400 hover:text-gray-600 transition-colors",
+                    "absolute p-2 text-gray-600 hover:text-gray-700 transition-colors",
                     isCompact ? "right-12" : "right-14"
                   )}
                 >

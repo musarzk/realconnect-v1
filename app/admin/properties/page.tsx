@@ -36,6 +36,7 @@ import {
 import { DeleteConfirmationModal } from "@/components/delete-confirmation-modal";
 import { ApprovalModal } from "@/components/approval-modal";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface Property {
   _id: string;
@@ -53,6 +54,7 @@ interface Property {
 }
 
 export default function AdminProperties(): JSX.Element {
+  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState<"all" | "pending" | "approved" | "rejected" | "suspended" | "sold">("all");
   const [properties, setProperties] = useState<Property[]>([]);
@@ -431,7 +433,7 @@ export default function AdminProperties(): JSX.Element {
                   onClick={(e) => {
                     // Only navigate if not clicking on a button or link
                     if (!(e.target as HTMLElement).closest('button, a')) {
-                      window.open(`/property/${property._id}`, '_blank');
+                      router.push(`/property/${property._id}`);
                     }
                   }}
                 >
@@ -473,7 +475,7 @@ export default function AdminProperties(): JSX.Element {
                       <ShieldCheck className="h-3.5 w-3.5" />
                     </Button>
                   </td>
-                  <td className="px-3 py-2">
+                  <td className="px-3 py-2 cursor-default" onClick={(e) => e.stopPropagation()}>
                     <span
                       className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${
                         property.status === "approved"
@@ -498,7 +500,7 @@ export default function AdminProperties(): JSX.Element {
                   <td className="px-3 py-2">
                     <div className="flex flex-col gap-1.5">
                       <div className="flex gap-1 justify-center">
-                        <Link href={`/property/${property._id}`} target="_blank">
+                        <Link href={`/property/${property._id}`}>
                           <Button size="sm" variant="outline" className="h-7 w-7 p-0" title="View Details">
                             <Eye className="h-3.5 w-3.5" />
                           </Button>

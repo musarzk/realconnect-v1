@@ -1,3 +1,55 @@
+// import { type NextRequest, NextResponse } from "next/server"
+// import { jwtVerify } from "jose"
+
+// const secret = new TextEncoder().encode(process.env.JWT_SECRET || "your-secret-key")
+
+
+
+// const protectedRoutes = ["/dashboard", "/admin",  "/messages", "/list-property", "/investor-portal"]
+// const authRoutes = ["/login", "/signup"]
+
+// export async function middleware(request: NextRequest) {
+//   const { pathname } = request.nextUrl
+//   const token = request.cookies.get("token")?.value
+
+//   // Check if route is protected
+//   const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route))
+//   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route))
+
+//   if (isAuthRoute && token) {
+//     try {
+//       await jwtVerify(token, secret)
+//       // User is logged in, redirect to dashboard
+//       return NextResponse.redirect(new URL("/dashboard", request.url))
+//     } catch {
+//       // Token is invalid, continue to auth page
+//       return NextResponse.next()
+//     }
+//   }
+
+//   if (isProtectedRoute && !token) {
+//     return NextResponse.redirect(new URL("/login", request.url))
+//   }
+
+//   if (isProtectedRoute && token) {
+//     try {
+//       await jwtVerify(token, secret)
+//       return NextResponse.next()
+//     } catch {
+//       return NextResponse.redirect(new URL("/login", request.url))
+//     }
+//   }
+
+//   return NextResponse.next()
+// }
+
+// export const config = {
+//   matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+// }
+
+
+// //////////////////////// UPDATED FOR PROTECTED LINKS/////////////////////
+
 
 // /middleware.ts
 import { NextResponse } from "next/server";

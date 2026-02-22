@@ -3,6 +3,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Card } from "@/components/ui/card";
 import { MapPin, Home, Maximize2 } from "lucide-react";
 
@@ -47,10 +48,11 @@ export function PropertyCard({
     <Link href={`/property/${id}`}>
       <Card
         className={`overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer h-full flex flex-col 
-          ${viewMode === "list" ? "flex-row" : ""}
+          ${viewMode === "list" ? "sm:flex-row " : ""}
           !p-0 !m-0
           rounded-b-none
           rounded-t-0.09
+          
           ${status === "sold" ? "opacity-75" : ""}
         `}
       >
@@ -58,16 +60,18 @@ export function PropertyCard({
         <div
           className={`
             relative bg-muted overflow-hidden 
-            ${viewMode === "list" ? "w-45 h-60 flex-shrink-0" : "h-40 w-full"}
+            ${viewMode === "list" ? "w-full sm:w-40 md:w-48 h-55 flex-shrink-0" : "h-40 w-full"}
             !p-0 !m-0 
             
             
           `}
         >
-          <img
+          <Image
             src={image || "/placeholder.svg"}
             alt={title}
-            className="w-full h-full object-cover block !p-0 !m-0 rounded-t-none"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover !p-0 !m-0 rounded-t-none"
           />
 
           {/* SOLD Badge - Prominent diagonal ribbon */}
@@ -94,20 +98,22 @@ export function PropertyCard({
         </div>
 
         {/* Content */}
-        <div className="p-4 flex-1 flex flex-col justify-between relative">
+        <div className={`flex-1 flex flex-col justify-between relative ${viewMode === "list" ? "p-3 sm:p-4" : "p-4"}`}>
           {/* Owner Avatar */}
           {ownerAvatar && (
             <div className="absolute bottom-12 right-4 z-10">
-              <img
+              <Image
                 src={ownerAvatar}
                 alt="Owner"
+                width={48}
+                height={48}
                 className="w-12 h-12 rounded-full border-2 border-white shadow-md object-cover"
               />
             </div>
           )}
           <div>
             <div className="flex items-start justify-between mb-2 gap-2">
-              <h3 className={`font-semibold line-clamp-2 flex-1 ${viewMode === "list" ? "text-sm" : ""}`}>
+              <h3 className={`font-semibold line-clamp-2 flex-1 ${viewMode === "list" ? "text-sm sm:text-base" : ""}`}>
                 {title}
               </h3>
               <div className="flex flex-col gap-1 items-end flex-shrink-0">
@@ -132,7 +138,7 @@ export function PropertyCard({
 
           {/* Footer */}
           <div>
-            <p className="text-2xl font-bold text-primary mb-3">
+            <p className={`font-bold text-primary mb-3 ${viewMode === "list" ? "text-xl sm:text-2xl" : "text-2xl"}`}>
               {price >= 1000000000
                 ? `N${(price / 1000000000).toFixed(1)}B`
                 : `N${(price / 1000000).toFixed(1)}M`
@@ -146,8 +152,8 @@ export function PropertyCard({
             )}
 
             <div
-              className={`flex justify-between text-xs text-gray-600 font-medium pt-3 gap-2 
-                ${viewMode === "list" ? "flex-col gap-1" : ""}
+              className={`flex text-xs text-gray-600 font-medium pt-3 gap-2 
+                ${viewMode === "list" ? "flex-wrap sm:justify-between" : "justify-between"}
               `}
             >
               <span className="flex items-center gap-1 whitespace-nowrap">

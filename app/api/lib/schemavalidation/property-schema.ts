@@ -38,6 +38,7 @@ export const CreatePropertySchema = z.object({
   beds: z.number().int().nonnegative().optional(),
   baths: z.number().int().nonnegative().optional(),
   sqft: z.number().int().nonnegative().optional(),
+  yearBuilt: z.number().int().optional(),
   images: z.array(z.string().url()).optional().default([]),
   amenities: z.array(z.string()).optional().default([]),
   contact: ContactZ,

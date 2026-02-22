@@ -34,7 +34,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const loadSession = async () => {
       try {
         const storedToken = localStorage.getItem("token")
+        const tokenTimestamp = localStorage.getItem("tokenTimestamp")
+
         if (storedToken) {
+          // Check if token is expired based on timestamp (24 hours max)
+          const MAX_SESSION_AGE = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+          if (tokenTimestamp) {
+            const loginTime = parseInt(tokenTimestamp, 10);
+            const now = Date.now();
+            const tokenAge = now - loginTime;
+
+            // If token is older than 24 hours, clear it and don't attempt to load session
+            if (tokenAge > MAX_SESSION_AGE) {
+              localStorage.removeItem("token");
+              localStorage.removeItem("tokenTimestamp");
+              setToken(null);
+              setIsLoading(false);
+              return;
+            }
+          }
+
           setToken(storedToken)
           const response = await fetch("/api/auth/me", {
             headers: { Authorization: `Bearer ${storedToken}` },
@@ -42,17 +62,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
           if (response.ok) {
             const data = await response.json()
-            setUser({
-              id: data._id,
-              email: data.email,
-              firstName: data.firstName,
-              lastName: data.lastName,
-              role: data.role,
-              approved: data.approved,
-            })
+            
+            if (data.authenticated && data.user) {
+              setUser({
+                id: data.user.id,
+                email: data.user.email,
+                firstName: data.user.firstName,
+                lastName: data.user.lastName,
+                role: data.user.role,
+                approved: data.user.approved,
+              })
+            } else {
+              // Not authenticated or invalid response format
+              localStorage.removeItem("token")
+              localStorage.removeItem("tokenTimestamp")
+              setToken(null)
+              setUser(null)
+            }
           } else {
             localStorage.removeItem("token")
+            localStorage.removeItem("tokenTimestamp")
             setToken(null)
+            setUser(null)
           }
         }
       } catch (error) {
@@ -76,6 +107,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null)
     setToken(null)
     localStorage.removeItem("token")
+    localStorage.removeItem("tokenTimestamp")
   }, [])
 
   // Auto-logout on inactivity
@@ -128,6 +160,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setToken(data.token)
     setUser(data.user)
     localStorage.setItem("token", data.token)
+    localStorage.setItem("tokenTimestamp", Date.now().toString())
   }, [])
 
   const login = useCallback(async (email: string, password: string) => {
@@ -146,6 +179,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setToken(data.token)
     setUser(data.user)
     localStorage.setItem("token", data.token)
+    localStorage.setItem("tokenTimestamp", Date.now().toString())
   }, [])
 
 

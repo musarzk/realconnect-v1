@@ -7,11 +7,12 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import Link from "next/link";
 import { z } from "zod";
+import Image from "next/image";
+import { Logo } from "@/components/logo";
 import { SuccessModal } from "@/components/success-modal";
 
 import { Eye, EyeOff } from "lucide-react";
 
-import Image from "next/image";
 
 const SignupBodySchema = z.object({
   firstName: z.string().min(1),
@@ -100,7 +101,9 @@ export default function SignupPage() {
     <div className="min-h-screen flex items-center justify-center py-12 px-4">
       <Card className="w-full max-w-md p-8">
         <div className="flex justify-center mb-6">
-          <Image src="/logo.png" alt="SmartReal Logo" width={180} height={54} className="h-14 w-auto object-contain" />
+          <Link href="/">
+            <Logo />
+          </Link>
         </div>
         <h1 className="text-3xl font-bold mb-6 text-center">Create Account</h1>
 
@@ -149,7 +152,7 @@ export default function SignupPage() {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-800"
             >
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
@@ -167,7 +170,7 @@ export default function SignupPage() {
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-800"
             >
               {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
