@@ -328,30 +328,38 @@ export default async function Page({ params }: { params: any }) {
 
     let doc: any = null;
 
-    // Priority 1: ObjectId lookup (most common for modern IDs)
+    // If looks like ObjectId, search by _id
     if (typeof id === "string" && ObjectId.isValid(id)) {
       try {
-        doc = await coll.findOne({ _id: new ObjectId(id) });
+        // doc = await coll.findOne({ _id: new ObjectId(id), status: "approved" });
+        doc = await coll.findOne({ _id: new ObjectId(id)});
       } catch {
         doc = null;
       }
     }
 
-    // Priority 2: Try numeric id (legacy) or slug if Priority 1 failed
+    // try numeric id (legacy)
     if (!doc) {
       const num = Number(id);
-      const isNumeric = !Number.isNaN(num);
-      
-      const orConditions: any[] = [
-        { id: id },
-        { slug: id }
-      ];
-      
-      if (isNumeric) {
-        orConditions.push({ id: num });
+      if (!Number.isNaN(num)) {
+        // doc = await coll.findOne({ id: num, status: "approved" });
+        doc = await coll.findOne({ id: num});
       }
+    }
 
-      doc = await coll.findOne({ $or: orConditions });
+    // fallback: try string id or slug
+    if (!doc) {
+      doc = await coll.findOne(
+        {
+          $and: [
+            {
+              $or: [{ id: String(id) }, { slug: String(id) }, { _id: String(id) as any }],
+            },
+            // { status: "approved" },
+          ],
+        },
+        { projection: {} }
+      );
     }
 
     if (!doc) return notFound();

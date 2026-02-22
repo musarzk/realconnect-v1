@@ -10,21 +10,19 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { useLogout } from "@/hooks/useLogout"
-import { Breadcrumbs } from "@/components/breadcrumbs"
 
 
 const ADMIN_MENU_ITEMS = [
   { label: "Dashboard", href: "/admin", icon: Activity },
-  { label: "List Property", href: "/list-property", icon: Home }, // User specifically asked for this
-  { label: "Properties", href: "/admin/properties", icon: FileText }, // Changed icon to differentiate
+  { label: "Properties", href: "/admin/properties", icon: Home },
   { label: "Bookings", href: "/admin/bookings", icon: Calendar },
   { label: "Messages", href: "/admin/messages", icon: MessageSquare },
   { label: "Investments", href: "/admin/investments", icon: TrendingUp },
   { label: "Investors", href: "/admin/investors", icon: Briefcase },
   { label: "Users", href: "/admin/users", icon: Users },
-  { label: "Reports", href: "/admin/reports", icon: BarChart3 },
-  { label: "Analytics", href: "/admin/analytics", icon: Settings },
-  { label: "View Site", href: "/", icon: Home },
+  { label: "Reports", href: "/admin/reports", icon: FileText },
+  { label: "Analytics", href: "/admin/analytics", icon: BarChart3 },
+  { label: "Settings", href: "/admin/settings", icon: Settings },
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -91,7 +89,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Main Content */}
         <div className="flex-1 overflow-y-auto bg-background p-8 transition-all duration-300">
           <div className="max-w-7xl mx-auto">
-            <Breadcrumbs />
             {children}
           </div>
         </div>

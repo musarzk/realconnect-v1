@@ -63,7 +63,6 @@ export const propertySchema = {
         beds: { bsonType: "int" },
         baths: { bsonType: "int" },
         sqft: { bsonType: "int" },
-        yearBuilt: { bsonType: "int" },
         images: { bsonType: "array", items: { bsonType: "string" } },
         ownerId: { bsonType: "string" },
         agentId: { bsonType: "string" },

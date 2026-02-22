@@ -456,7 +456,7 @@ export default function PropertyDetailClient({
 
                 {/* Price */}
                 <div className="border-b border-border pb-6">
-                  <p className="text-3xl md:text-5xl font-bold text-primary mb-2">
+                  <p className="text-5xl font-bold text-primary mb-2">
                     {(property.price ?? 0) >= 1000000000 
                       ? `₦${((property.price ?? 0) / 1000000000).toFixed(1)}B`
                       : `₦${(property.price ?? 0).toLocaleString()}`
@@ -626,7 +626,7 @@ export default function PropertyDetailClient({
       {messageModalOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <Card className="w-full max-w-md p-6 relative">
-            <button onClick={() => setMessageModalOpen(false)} className="absolute right-4 top-4 text-gray-600 hover:text-gray-800">
+            <button onClick={() => setMessageModalOpen(false)} className="absolute right-4 top-4 text-gray-500 hover:text-gray-700">
               <X className="h-5 w-5" />
             </button>
             <h2 className="text-xl font-bold mb-4">Send Message</h2>

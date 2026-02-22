@@ -10,7 +10,8 @@ import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
 import Link from "next/link"
 import { Eye, EyeOff } from "lucide-react"
-import { Logo } from "@/components/logo"
+
+import Image from "next/image"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -38,9 +39,7 @@ export default function LoginPage() {
   return (
     <Card className="w-full max-w-md p-8">
       <div className="flex justify-center mb-6">
-        <Link href="/">
-          <Logo />
-        </Link>
+        <Image src="/logo.png" alt="SmartReal Logo" width={180} height={54} className="h-14 w-auto object-contain" />
       </div>
       <h1 className="text-3xl font-bold mb-6 text-center">Login</h1>
       {error && <div className="bg-red-100 text-red-700 p-3 rounded mb-4">{error}</div>}
@@ -64,7 +63,7 @@ export default function LoginPage() {
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-800"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
           >
             {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>

@@ -6,6 +6,17 @@
     "regions": [
         "iad1"
     ],
+    "env": {
+        "MONGODB_URI": "@mongodb_uri",
+        "MONGODB_DB": "@mongodb_db",
+        "JWT_SECRET": "@jwt_secret",
+        "NODE_ENV": "production"
+    },
+    "build": {
+        "env": {
+            "NEXT_PUBLIC_API_URL": "@next_public_api_url"
+        }
+    },
     "headers": [
         {
             "source": "/(.*)",

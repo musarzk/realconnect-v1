@@ -194,7 +194,7 @@ export default function AdminMessagesPage() {
                               <Eye className="h-4 w-4" />
                             </Button>
                           </DialogTrigger>
-                          <DialogContent className="bg-white">
+                          <DialogContent>
                             <DialogHeader>
                               <DialogTitle>{selectedMessage?.subject}</DialogTitle>
                             </DialogHeader>

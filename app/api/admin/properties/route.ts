@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from "next/server"
 import { getDB } from "@/app/api/lib/db"
 import { verifyAuthHeader } from "@/app/api/lib/auth"
 
-export const dynamic = "force-dynamic";
-
 export async function GET(request: NextRequest) {
   try {
     // Verify authentication

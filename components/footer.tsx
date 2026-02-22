@@ -1,6 +1,6 @@
 import { Separator } from "@/components/ui/separator"
 import Link from "next/link"
-import { Mail, Phone, MapPin } from "lucide-react"
+import { Mail, Phone, MapPin } from "lucide-react"  
 import { Logo } from "@/components/logo"
 
 export function Footer() {
@@ -89,7 +89,7 @@ export function Footer() {
         <hr className="my-8 border-gray-400 opacity-30" />
 
         <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-700 font-medium">
-          <p className="text-center md:text-left">&copy; 2025 SmartReal. All rights reserved.</p>
+          <p className="text-center md:text-left">&copy; {new Date().getFullYear()}  RealConnect. All rights reserved.</p>
           <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mt-3 md:mt-0 text-xs sm:text-sm">
             <Link href="#" className="hover:text-foreground whitespace-nowrap font-medium">
               Privacy Policy

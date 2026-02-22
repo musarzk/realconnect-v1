@@ -5,106 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { Upload, Check, ArrowLeft, Trash, Star, GripVertical } from "lucide-react";
+import { Upload, Check, ArrowLeft } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  rectSortingStrategy,
-  useSortable,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-
-function SortableImage({ id, url, onRemove, onSetPreview, isPreview }: {
-  id: string;
-  url: string;
-  onRemove: (url: string) => void;
-  onSetPreview: (url: string) => void;
-  isPreview: boolean;
-}) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    zIndex: isDragging ? 50 : 0,
-  };
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className={`relative group aspect-square rounded-lg overflow-hidden border bg-muted transition-shadow ${isDragging ? "shadow-2xl ring-2 ring-primary" : "hover:shadow-md"}`}
-    >
-      <img src={url} alt="Property" className="w-full h-full object-cover" />
-
-      {/* Overlay controls */}
-      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-        <Button
-          type="button"
-          size="icon"
-          variant="secondary"
-          className="h-8 w-8 rounded-full"
-          onClick={() => onSetPreview(url)}
-          title="Set as preview"
-        >
-          <Star className={`h-4 w-4 ${isPreview ? "fill-yellow-400 text-yellow-400" : ""}`} />
-        </Button>
-        <Button
-          type="button"
-          size="icon"
-          variant="destructive"
-          className="h-8 w-8 rounded-full"
-          onClick={() => onRemove(url)}
-          title="Delete image"
-        >
-          <Trash className="h-4 w-4" />
-        </Button>
-      </div>
-
-      {/* Drag handle */}
-      <div
-        {...attributes}
-        {...listeners}
-        className="absolute top-2 right-2 p-1.5 bg-white/90 backdrop-blur-sm rounded-md shadow-sm cursor-grab active:cursor-grabbing opacity-0 group-hover:opacity-100 transition-opacity border border-border"
-      >
-        <GripVertical className="h-4 w-4 text-muted-foreground" />
-      </div>
-
-      {isPreview && (
-        <div className="absolute top-2 left-2 bg-primary text-primary-foreground text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider shadow-sm">
-          Main Preview
-        </div>
-      )}
-    </div>
-  );
-}
 
 type FormState = {
   title: string;
@@ -190,64 +93,6 @@ export default function EditPropertyPage() {
     images: [],
   });
 
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [imageToDelete, setImageToDelete] = useState<string | null>(null);
-
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (over && active.id !== over.id) {
-      setFormData((prev) => {
-        const oldIndex = prev.images.indexOf(active.id as string);
-        const newIndex = prev.images.indexOf(over.id as string);
-        return {
-          ...prev,
-          images: arrayMove(prev.images, oldIndex, newIndex),
-        };
-      });
-    }
-  };
-
-  const handleRemoveImageRequest = (url: string) => {
-    setImageToDelete(url);
-    setShowDeleteConfirm(true);
-  };
-
-  const confirmDeleteImage = () => {
-    if (imageToDelete) {
-      setFormData((prev) => ({
-        ...prev,
-        images: prev.images.filter((img) => img !== imageToDelete),
-      }));
-      if (imagePreview === imageToDelete) {
-        setImagePreview(formData.images.find((img) => img !== imageToDelete) || "");
-      }
-    }
-    setShowDeleteConfirm(false);
-    setImageToDelete(null);
-  };
-
-  const handleSetPreview = (url: string) => {
-    setFormData((prev) => {
-      const filtered = prev.images.filter((img) => img !== url);
-      return {
-        ...prev,
-        images: [url, ...filtered],
-      };
-    });
-    setImagePreview(url);
-  };
-
   // Fetch property details by id and populate form
   async function fetchProperty() {
     if (!id) {
@@ -268,49 +113,49 @@ export default function EditPropertyPage() {
       const data = await res.json();
 
       // inside fetchProperty(), after `const data = await res.json();`
-      setFormData((prev) => ({
-        ...prev,
-        title: data.title ?? prev.title,
-        description: data.description ?? prev.description,
-        propertyType: data.type ?? prev.propertyType,
+setFormData((prev) => ({
+  ...prev,
+  title: data.title ?? prev.title,
+  description: data.description ?? prev.description,
+  propertyType: data.type ?? prev.propertyType,
 
-        // CORRECTED: only map when data.listingType is present, otherwise keep prev
-        listingType: data.listingType
-          ? (data.listingType === "rent" ? "rent" : "sale")
-          : prev.listingType,
+  // CORRECTED: only map when data.listingType is present, otherwise keep prev
+  listingType: data.listingType
+    ? (data.listingType === "rent" ? "rent" : "sale")
+    : prev.listingType,
 
-        location: data.location ?? prev.location,
-        country: data.country ?? prev.country,
-        city: data.city ?? prev.city,
-        postalCode: data.postalCode ?? prev.postalCode,
+  location: data.location ?? prev.location,
+  country: data.country ?? prev.country,
+  city: data.city ?? prev.city,
+  postalCode: data.postalCode ?? prev.postalCode,
 
-        bedrooms: data.beds != null ? String(data.beds) : prev.bedrooms,
-        bathrooms: data.baths != null ? String(data.baths) : prev.bathrooms,
-        squareFeet: data.sqft != null ? String(data.sqft) : prev.squareFeet,
-        yearBuilt: data.yearBuilt != null ? String(data.yearBuilt) : prev.yearBuilt,
-        garage: data.garage ?? prev.garage,
+  bedrooms: data.beds != null ? String(data.beds) : prev.bedrooms,
+  bathrooms: data.baths != null ? String(data.baths) : prev.bathrooms,
+  squareFeet: data.sqft != null ? String(data.sqft) : prev.squareFeet,
+  yearBuilt: data.yearBuilt != null ? String(data.yearBuilt) : prev.yearBuilt,
+  garage: data.garage ?? prev.garage,
 
-        price: data.price != null ? String(data.price) : prev.price,
-        priceUsd: data.priceUsd != null ? String(data.priceUsd) : prev.priceUsd,
-        rentalPrice: data.rentalPrice != null ? String(data.rentalPrice) : prev.rentalPrice,
+  price: data.price != null ? String(data.price) : prev.price,
+  priceUsd: data.priceUsd != null ? String(data.priceUsd) : prev.priceUsd,
+  rentalPrice: data.rentalPrice != null ? String(data.rentalPrice) : prev.rentalPrice,
 
-        features: {
-          ...prev.features,
-          ...(Array.isArray(data.amenities)
-            ? data.amenities.reduce((acc: Record<string, boolean>, a: string) => {
-              acc[a] = true;
-              return acc;
-            }, {})
-            : {}),
-          ...(data.features ?? {}),
-        },
+  features: {
+    ...prev.features,
+    ...(Array.isArray(data.amenities)
+      ? data.amenities.reduce((acc: Record<string, boolean>, a: string) => {
+          acc[a] = true;
+          return acc;
+        }, {})
+      : {}),
+    ...(data.features ?? {}),
+  },
 
-        ownerName: data.contact?.name ?? prev.ownerName,
-        ownerEmail: data.contact?.email ?? prev.ownerEmail,
-        ownerPhone: data.contact?.phone ?? prev.ownerPhone,
+  ownerName: data.contact?.name ?? prev.ownerName,
+  ownerEmail: data.contact?.email ?? prev.ownerEmail,
+  ownerPhone: data.contact?.phone ?? prev.ownerPhone,
 
-        images: Array.isArray(data.images) ? data.images : prev.images,
-      }));
+  images: Array.isArray(data.images) ? data.images : prev.images,
+}));
       // set image preview to first image if present
       if (Array.isArray(data.images) && data.images.length > 0) {
         setImagePreview(data.images[0]);
@@ -353,14 +198,7 @@ export default function EditPropertyPage() {
     const files = e.target.files;
     if (!files || files.length === 0) return;
     const list = Array.from(files);
-
-    // Check for size limits (10MB)
-    const validFiles = list.filter(file => file.size <= 10 * 1024 * 1024);
-    if (validFiles.length < list.length) {
-      alert("Some files were skipped because they exceed the 10MB limit.");
-    }
-
-    const readers = validFiles.map(
+    const readers = list.map(
       (file) =>
         new Promise<string>((resolve, reject) => {
           const r = new FileReader();
@@ -374,13 +212,8 @@ export default function EditPropertyPage() {
     );
     Promise.all(readers)
       .then((dataUrls) => {
-        setFormData((prev) => {
-          const newImages = [...prev.images, ...dataUrls];
-          if (!imagePreview && newImages.length > 0) {
-            setImagePreview(newImages[0]);
-          }
-          return { ...prev, images: newImages };
-        });
+        setFormData((prev) => ({ ...prev, images: [...prev.images, ...dataUrls] }));
+        setImagePreview((prev) => prev || dataUrls[0] || "");
       })
       .catch((err) => {
         console.error("Image read failed", err);
@@ -392,14 +225,14 @@ export default function EditPropertyPage() {
       formData.propertyType === "apartment"
         ? "residential"
         : formData.propertyType === "residential"
-          ? "residential"
-          : formData.propertyType === "office"
-            ? "commercial"
-            : formData.propertyType === "commercial"
-              ? "commercial"
-              : formData.propertyType === "land"
-                ? "land"
-                : "residential";
+        ? "residential"
+        : formData.propertyType === "office"
+        ? "commercial"
+        : formData.propertyType === "commercial"
+        ? "commercial"
+        : formData.propertyType === "land"
+        ? "land"
+        : "residential";
 
     const amenities = Object.entries(formData.features).filter(([, v]) => v).map(([k]) => k);
 
@@ -714,12 +547,8 @@ export default function EditPropertyPage() {
               </div>
 
               <div>
-                <div className="flex items-center justify-between mb-2">
-                  <label className="text-sm font-medium">Property Images</label>
-                  <span className="text-xs text-muted-foreground">{formData.images.length} images uploaded</span>
-                </div>
-
-                <div className="border-2 border-dashed border-border rounded-xl p-8 text-center bg-muted/30 hover:bg-muted/50 transition-colors">
+                <label className="text-sm font-medium mb-2 block">Property Images</label>
+                <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
                   <input
                     type="file"
                     accept="image/*"
@@ -728,41 +557,22 @@ export default function EditPropertyPage() {
                     className="hidden"
                     id="image-upload"
                   />
-                  <label htmlFor="image-upload" className="cursor-pointer group">
-                    <div className="bg-background w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm group-hover:scale-110 transition-transform">
-                      <Upload className="h-6 w-6 text-primary" />
-                    </div>
-                    <p className="text-sm font-semibold">Click to upload or drag and drop</p>
-                    <p className="text-xs text-muted-foreground mt-1">PNG, JPG, GIF up to 10MB each</p>
+                  <label htmlFor="image-upload" className="cursor-pointer">
+                    <Upload className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
+                    <p className="text-sm font-medium">Click to upload or drag and drop</p>
+                    <p className="text-xs text-muted-foreground">PNG, JPG, GIF up to 10MB</p>
                   </label>
                 </div>
-
                 {formData.images.length > 0 && (
-                  <div className="mt-8">
-                    <p className="text-xs font-medium text-muted-foreground mb-4 uppercase tracking-wider">Drag to reorder • First image is preview</p>
-                    <DndContext
-                      sensors={sensors}
-                      collisionDetection={closestCenter}
-                      onDragEnd={handleDragEnd}
-                    >
-                      <SortableContext
-                        items={formData.images}
-                        strategy={rectSortingStrategy}
-                      >
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                          {formData.images.map((img, idx) => (
-                            <SortableImage
-                              key={img}
-                              id={img}
-                              url={img}
-                              onRemove={handleRemoveImageRequest}
-                              onSetPreview={handleSetPreview}
-                              isPreview={idx === 0}
-                            />
-                          ))}
-                        </div>
-                      </SortableContext>
-                    </DndContext>
+                  <div className="mt-4 grid grid-cols-3 gap-2">
+                    {formData.images.map((img, idx) => (
+                      <img
+                        key={idx}
+                        src={img}
+                        alt={`Preview ${idx}`}
+                        className="h-24 w-full object-cover rounded-lg"
+                      />
+                    ))}
                   </div>
                 )}
               </div>
@@ -772,7 +582,6 @@ export default function EditPropertyPage() {
           {/* Navigation Buttons */}
           <div className="flex gap-4 mt-8 pt-8 border-t border-border">
             <Button
-              type="button"
               variant="outline"
               onClick={() => setCurrentStep(Math.max(1, currentStep - 1))}
               disabled={currentStep === 1}
@@ -781,54 +590,17 @@ export default function EditPropertyPage() {
               Previous
             </Button>
             {currentStep < 3 ? (
-              <Button type="button" onClick={() => setCurrentStep(currentStep + 1)} disabled={!isStepValid()} className="flex-1">
+              <Button onClick={() => setCurrentStep(currentStep + 1)} disabled={!isStepValid()} className="flex-1">
                 Next
               </Button>
             ) : (
-              <Button type="button" onClick={handleSubmit} disabled={submitting || !isStepValid()} className="flex-1">
+              <Button onClick={handleSubmit} disabled={submitting || !isStepValid()} className="flex-1">
                 {submitting ? "Updating..." : "Update Property"}
               </Button>
             )}
           </div>
         </Card>
       </div>
-
-      {/* Delete Confirmation Modal */}
-      <Dialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Delete Image</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to remove this image? This action cannot be undone.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="py-4">
-            {imageToDelete && (
-              <img
-                src={imageToDelete}
-                alt="To delete"
-                className="w-full h-48 object-cover rounded-lg border"
-              />
-            )}
-          </div>
-          <DialogFooter className="gap-2 sm:gap-0">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setShowDeleteConfirm(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="button"
-              variant="destructive"
-              onClick={confirmDeleteImage}
-            >
-              Remove Image
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

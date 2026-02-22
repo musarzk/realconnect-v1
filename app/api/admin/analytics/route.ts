@@ -2,8 +2,6 @@ import { NextResponse, type NextRequest } from "next/server";
 import { getUsersCollection, getPropertiesCollection } from "@/lib/db";
 import { verifyAuthHeader, getAuthUser } from "@/app/api/lib/auth";
 
-export const dynamic = "force-dynamic";
-
 async function requireAdmin(request: NextRequest) {
   // Try header token first
   let user = await verifyAuthHeader(request);

@@ -11,7 +11,6 @@ import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { useLogout } from "@/hooks/useLogout"; // path you save it to
 import { useAuth } from "@/hooks/use-auth"
-import { Breadcrumbs } from "@/components/breadcrumbs"
 
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -28,18 +27,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         { label: "My Investments", href: "/dashboard/investments", icon: TrendingUp },
         { label: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
         { label: "Profile", href: "/dashboard/profile", icon: User },
-        { label: "View Site", href: "/", icon: Home },
       ];
     }
 
     // Default for agents and users
     return [
       { label: "Overview", href: "/dashboard", icon: LayoutDashboard },
-      { label: "List Property", href: "/list-property", icon: Home },
-      { label: "My Listings", href: "/dashboard/listings", icon: LayoutDashboard },
+      { label: "My Listings", href: "/dashboard/listings", icon: Home },
       { label: "Analytics", href: "/dashboard/analytics", icon: BarChart3 },
       { label: "Profile", href: "/dashboard/profile", icon: User },
-      { label: "View Site", href: "/", icon: Home },
     ];
   };
 
@@ -86,7 +82,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             >
               <LayoutDashboard className="h-6 w-6" />
             </button>
-            <Breadcrumbs />
             {children}
           </div>
         </div>
