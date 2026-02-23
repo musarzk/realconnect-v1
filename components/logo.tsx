@@ -11,16 +11,16 @@ interface LogoProps {
 
 export const Logo: React.FC<LogoProps> = ({ className, iconOnly = false }) => {
   return (
-    <div className={cn("flex items-center gap-2", className)}>
+    <div className={cn("flex items-center gap-1 md:gap-2", className)}>
       {/* Icon Graphic - logo2.png (House Roof) */}
-      <div className="relative h-15 md:h-16 w-15 md:w-16 flex-shrink-0">
-      <Image
-            src="/logo2.png"
-            alt="SmartReal Logo"
-            width={200}
-            height={60}
-            className="h-10 md:h-16 w-auto object-contain"
-          />
+      <div className="relative h-15 md:h-16 w-10 md:w-16 flex-shrink-0">
+        <Image
+          src="/logo2.png"
+          alt="SmartReal Logo"
+          width={200}
+          height={60}
+          className="h-10 md:h-16 w-auto object-contain"
+        />
       </div>
 
       {/* Text Branding */}

@@ -256,14 +256,14 @@ export default function InvestorPortal() {
       {/* Investment Opportunities */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
             <div>
-              <h2 className="text-3xl font-bold text-foreground">Investment Opportunities</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground">Investment Opportunities</h2>
               <p className="text-foreground/70 mt-2">
                 {filteredInvestments.length} opportunities matching your criteria
               </p>
             </div>
-            <Button onClick={handleCreatePortfolio}>
+            <Button onClick={handleCreatePortfolio} className="w-full sm:w-auto">
               <Plus className="mr-2 h-4 w-4" />
               Create Portfolio
             </Button>
