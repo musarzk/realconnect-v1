@@ -414,6 +414,7 @@ export default function EditPropertyPage() {
       beds: formData.bedrooms ? Number(formData.bedrooms) : undefined,
       baths: formData.bathrooms ? Number(formData.bathrooms) : undefined,
       sqft: formData.squareFeet ? Number(formData.squareFeet) : undefined,
+      yearBuilt: formData.yearBuilt ? Number(formData.yearBuilt) : undefined,
       images: formData.images ?? [],
       amenities,
       contact: {
@@ -614,6 +615,16 @@ export default function EditPropertyPage() {
                     name="squareFeet"
                     placeholder="Total square feet"
                     value={formData.squareFeet}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium mb-2 block">Year Built</label>
+                  <Input
+                    type="number"
+                    name="yearBuilt"
+                    placeholder="Year property was built"
+                    value={formData.yearBuilt}
                     onChange={handleInputChange}
                   />
                 </div>

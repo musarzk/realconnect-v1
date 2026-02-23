@@ -77,6 +77,7 @@ export async function updateProperty(propertyId: string, raw: unknown): Promise<
     if (parsed.beds !== undefined) updateFields.beds = parsed.beds;
     if (parsed.baths !== undefined) updateFields.baths = parsed.baths;
     if (parsed.sqft !== undefined) updateFields.sqft = parsed.sqft;
+    if (parsed.yearBuilt !== undefined) updateFields.yearBuilt = parsed.yearBuilt;
     if (parsed.images !== undefined) updateFields.images = parsed.images;
     if (parsed.amenities !== undefined) updateFields.amenities = parsed.amenities;
     if (parsed.contact !== undefined) updateFields.contact = parsed.contact;
