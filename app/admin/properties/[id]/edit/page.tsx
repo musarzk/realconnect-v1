@@ -151,6 +151,7 @@ export default function EditPropertyPage() {
   const [loading, setLoading] = useState<boolean>(!!id); // loading only if we have an id to fetch
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
+  const [initialData, setInitialData] = useState<FormState | null>(null);
 
   const [formData, setFormData] = useState<FormState>({
     title: "",
@@ -311,6 +312,49 @@ export default function EditPropertyPage() {
 
         images: Array.isArray(data.images) ? data.images : prev.images,
       }));
+
+      // Store initial data for rollback
+      const mappedInitialData: FormState = {
+        title: data.title ?? "",
+        description: data.description ?? "",
+        propertyType: data.type ?? "apartment",
+        listingType: data.listingType === "rent" ? "rent" : "sale",
+        location: data.location ?? "",
+        country: data.country ?? "",
+        city: data.city ?? "",
+        postalCode: data.postalCode ?? "",
+        bedrooms: data.beds != null ? String(data.beds) : "",
+        bathrooms: data.baths != null ? String(data.baths) : "",
+        squareFeet: data.sqft != null ? String(data.sqft) : "",
+        yearBuilt: data.yearBuilt != null ? String(data.yearBuilt) : "",
+        garage: data.garage ?? "",
+        price: data.price != null ? String(data.price) : "",
+        priceUsd: data.priceUsd != null ? String(data.priceUsd) : "",
+        rentalPrice: data.rentalPrice != null ? String(data.rentalPrice) : "",
+        features: {
+          parking: false,
+          pool: false,
+          garden: false,
+          gym: false,
+          balcony: false,
+          aircondition: false,
+          ...(Array.isArray(data.amenities)
+            ? data.amenities.reduce((acc: Record<string, boolean>, a: string) => {
+              acc[a] = true;
+              return acc;
+            }, {})
+            : {}),
+          ...(data.features ?? {}),
+        },
+        ownerName: data.contact?.name ?? "",
+        ownerEmail: data.contact?.email ?? "",
+        ownerPhone: data.contact?.phone ?? "",
+        agentName: data.agentName ?? "",
+        agentPhone: data.agentPhone ?? "",
+        images: Array.isArray(data.images) ? data.images : [],
+      };
+      setInitialData(mappedInitialData);
+
       // set image preview to first image if present
       if (Array.isArray(data.images) && data.images.length > 0) {
         setImagePreview(data.images[0]);
@@ -471,6 +515,13 @@ export default function EditPropertyPage() {
       setSubmitting(false);
     }
   }
+
+  const handleCancel = () => {
+    if (initialData) {
+      setFormData(initialData);
+    }
+    router.push("/admin/properties");
+  };
 
   const isStepValid = () => {
     switch (currentStep) {
@@ -790,6 +841,14 @@ export default function EditPropertyPage() {
               className="flex-1"
             >
               Previous
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={handleCancel}
+              className="flex-1"
+            >
+              Cancel
             </Button>
             {currentStep < 3 ? (
               <Button type="button" onClick={() => setCurrentStep(currentStep + 1)} disabled={!isStepValid()} className="flex-1">
