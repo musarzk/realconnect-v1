@@ -82,7 +82,7 @@ export default function InvestmentPlanPage() {
         {
             id: "starter",
             name: "Starter Plan",
-            minAmount: 5000,
+            minAmount: 5000000,
             expectedReturn: 8.5,
             duration: "12 months",
             features: [
@@ -95,7 +95,7 @@ export default function InvestmentPlanPage() {
         {
             id: "growth",
             name: "Growth Plan",
-            minAmount: 25000,
+            minAmount: 25000000,
             expectedReturn: 12.0,
             duration: "24 months",
             features: [
@@ -110,7 +110,7 @@ export default function InvestmentPlanPage() {
         {
             id: "premium",
             name: "Premium Plan",
-            minAmount: 100000,
+            minAmount: 100000000,
             expectedReturn: 15.5,
             duration: "36 months",
             features: [
@@ -140,7 +140,11 @@ export default function InvestmentPlanPage() {
 
         const amount = parseFloat(investmentAmount);
         if (amount < plan.minAmount) {
-            showModal("error", "Invalid Amount", `Minimum investment for this plan is $${plan.minAmount.toLocaleString()}`);
+            showModal("error", "Invalid Amount", `Minimum investment for this plan is $${Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+                maximumFractionDigits: 0,
+            }).format(plan.minAmount)}`);
             return;
         }
 
@@ -216,9 +220,19 @@ export default function InvestmentPlanPage() {
 
                 <Card className="p-6 mb-8 bg-gradient-to-r from-primary/5 to-accent/5">
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <div>
+                       
+                            <div>
                             <p className="text-sm text-muted-foreground mb-1">Property Value</p>
-                            <p className="text-2xl font-bold">${(propertyPrice / 1000).toFixed(0)}K</p>
+                            <p className="text-2xl font-bold">N{Intl.NumberFormat("en-US", {
+                            notation: "compact",
+                            maximumFractionDigits: 1,
+                            }).format(propertyPrice * 1.075)}
+                                <span className="text-md text-foreground/60 ml-1">
+                                (${(propertyPrice * 1.075 / 1000).toLocaleString(undefined, {
+                                maximumFractionDigits: 0,
+                                })})
+                                </span>
+</p>
                         </div>
                         <div>
                             <p className="text-sm text-muted-foreground mb-1">Expected ROI</p>
@@ -244,15 +258,36 @@ export default function InvestmentPlanPage() {
                             onClick={() => setSelectedPlan(plan.id)}
                         >
                             {plan.recommended && (
-                                <div className="bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full inline-block mb-4">
+                                <div className="bg-primary border text-primary-foreground text-xs font-bold px-3 py-1 rounded-full inline-block mb-4">
                                     RECOMMENDED
                                 </div>
                             )}
                             <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-                            <div className="mb-4">
-                                <p className="text-3xl font-bold text-primary">${(plan.minAmount / 1000).toFixed(0)}K</p>
-                                <p className="text-sm text-muted-foreground">Minimum investment</p>
-                            </div>
+                                    
+                                    <div className="mb-4">
+                                    <p className="text-3xl font-bold text-primary">
+                                    ₦
+                                    {(plan.minAmount).toLocaleString("en-US", {
+                                    notation: "compact",
+                                    maximumFractionDigits: 1,
+                                    })}
+
+                                    <span className="text-base text-muted-foreground ml-1">
+                                    (
+                                    $
+                                    {((plan.minAmount * 1.075) / 1000).toLocaleString("en-US", {
+                                    notation: "compact",
+                                    maximumFractionDigits: 1,
+                                    })}
+                                    )
+                                    </span>
+                                    </p>
+
+                                    <p className="text-sm text-muted-foreground">
+                                    Minimum investment
+                                    </p>
+                                    </div>
+
 
                             <div className="flex items-center gap-2 mb-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
                                 <TrendingUp className="h-5 w-5 text-green-600" />

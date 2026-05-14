@@ -87,7 +87,13 @@ export default function InvestorPortal() {
     {
       icon: DollarSign,
       label: "Total Opportunities",
-      value: totalOpportunities > 0 ? `$${(totalOpportunities / 1000000).toFixed(1)}M` : "$0",
+      value:
+  totalOpportunities > 0
+    ? `$${Intl.NumberFormat("en-US", {
+        notation: "compact",
+        maximumFractionDigits: 1,
+      }).format(totalOpportunities)}`
+    : "$0",
       change: "+12%",
     },
     {
@@ -300,14 +306,54 @@ export default function InvestorPortal() {
                     </div>
 
                     <div className="grid grid-cols-2 gap-4 mb-6 py-4 border-y border-border">
-                      <div>
-                        <p className="text-foreground/70 text-sm font-medium">Total Investment</p>
-                        <p className="font-bold text-foreground">${(opportunity.price / 1000).toFixed(0)}K</p>
-                      </div>
-                      <div>
-                        <p className="text-foreground/70 text-sm font-medium">Min. Investment</p>
-                        <p className="font-bold text-foreground">${(opportunity.minInvestment / 1000).toFixed(0)}K</p>
-                      </div>
+                                    
+              {/* INVESTMENT CALCULATIOSN AND DETAILS*/}
+          <div>
+          <p className="text-foreground/70 text-sm font-medium">
+          Total Investment
+          </p>
+                <p className="font-bold text-foreground">
+            ₦{(opportunity.price * 1.075).toLocaleString("en-US", {
+            notation: "compact",
+            maximumFractionDigits: 1,
+            })}
+
+            <span className="text-md text-foreground/60 ml-1">
+            (
+            ${((opportunity.price * 1.075) / 1000).toLocaleString("en-US", {
+            notation: "compact",
+            maximumFractionDigits: 1,
+            })}
+            )
+            </span>
+            </p>
+          </div>
+
+            <div>
+            <p className="text-foreground/70 text-sm font-medium">
+              Min. Investment
+            </p>
+
+                  <p className="font-bold text-foreground">
+                  ₦
+                  {(opportunity.minInvestment * 1.075).toLocaleString("en-US", {
+                  notation: "compact",
+                  maximumFractionDigits: 1,
+                  })}
+
+                  <span className="text-md text-foreground/60 ml-1">
+                  (
+                  $
+                  {((opportunity.minInvestment * 1.075) / 1000).toLocaleString("en-US", {
+                  notation: "compact",
+                  maximumFractionDigits: 1,
+                  })}
+                  )
+                  </span>
+                  </p>
+            </div>
+            {/* ///////////////////////////////////////// */}
+
                       <div>
                         <p className="text-foreground/70 text-sm font-medium">Risk Level</p>
                         <p className="font-bold capitalize text-primary">{opportunity.riskLevel}</p>

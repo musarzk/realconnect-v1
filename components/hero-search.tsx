@@ -123,11 +123,11 @@ export function HeroSearch({ onSearch }: HeroSearchProps) {
             <div className="flex flex-wrap justify-center gap-3 sm:gap-6 mb-4 sm:mb-6 text-xs sm:text-base font-medium">
               {[
                 { id: "buy", label: "Buy" },
-                { id: "rent", label: "Rent" },
                 { id: "sell", label: "Sell" },
-                { id: "pre-approval", label: "Pre-approval" },
-                { id: "just-sold", label: "Just sold" },
-                { id: "home-value", label: "Home value" },
+                { id: "rent", label: "Rent" },
+                { id: "invest", label: "Invest" },
+                { id: "Earn", label: "Earn" },
+                { id: "Evaluate", label: "Evaluate" },
               ].map((tab) => (
                 <button
                   key={tab.id}

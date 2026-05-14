@@ -1,0 +1,3 @@
+﻿app/admin/properties/[id]/edit/page.tsx(19,8): error TS2307: Cannot find module '@dnd-kit/core' or its corresponding type declarations.
+app/admin/properties/[id]/edit/page.tsx(26,8): error TS2307: Cannot find module '@dnd-kit/sortable' or its corresponding type declarations.
+app/admin/properties/[id]/edit/page.tsx(27,21): error TS2307: Cannot find module '@dnd-kit/utilities' or its corresponding type declarations.
