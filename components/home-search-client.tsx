@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useMemo, useState } from "react";
@@ -51,6 +52,7 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
     const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
     const [sortBy, setSortBy] = useState("featured");
     const [currentPage, setCurrentPage] = useState(1);
+    const [filtersOpen, setFiltersOpen] = useState(false);
     const itemsPerPage = 12;
 
     const [filters, setFilters] = useState({
@@ -170,13 +172,23 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
 
                 <div className="w-full grid grid-cols-1 lg:grid-cols-4 gap-8">
                     {/* Filters Sidebar */}
-                    <div className="lg:col-span-1">
-                        <Card className="p-6 sticky top-24">
-                            <h2 className="font-bold mb-6 flex items-center gap-2">
-                                <Filter className="h-4 w-4" /> Filters
-                            </h2>
+                    <div className={`lg:col-span-1 transition-all duration-300 ease-in-out ${filtersOpen ? "max-h-[1000px] opacity-100 mb-6" : "max-h-0 opacity-0 overflow-hidden"} lg:max-h-full lg:opacity-100 lg:overflow-visible lg:mb-0`}>
+                        <Card className="p-6 lg:sticky lg:top-24">
+                            <div className="flex items-center justify-between mb-6">
+                                <h2 className="font-bold flex items-center gap-2">
+                                    <Filter className="h-4 w-4" /> Filters
+                                </h2>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="lg:hidden"
+                                    onClick={() => setFiltersOpen(false)}
+                                >
+                                    Close
+                                </Button>
+                            </div>
 
-                            <div className="space-y-4">
+                            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
                                 <div>
                                     <label className="text-sm font-medium mb-2 block">Listing Type</label>
                                     <select
@@ -272,8 +284,11 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
                     {/* Properties Grid */}
                     <div className="lg:col-span-3">
                         <div className="flex justify-between items-center mb-6">
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 items-center">
                                 <button
+                                    type="button"
+                                    title="Grid view"
+                                    aria-label="Grid view"
                                     onClick={() => setViewMode("grid")}
                                     className={`p-2 rounded-lg transition-colors ${viewMode === "grid"
                                         ? "bg-primary text-primary-foreground"
@@ -283,6 +298,9 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
                                     <Grid3x3 className="h-4 w-4" />
                                 </button>
                                 <button
+                                    type="button"
+                                    title="List view"
+                                    aria-label="List view"
                                     onClick={() => setViewMode("list")}
                                     className={`p-2 rounded-lg transition-colors ${viewMode === "list"
                                         ? "bg-primary text-primary-foreground"
@@ -291,6 +309,15 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
                                 >
                                     <List className="h-4 w-4" />
                                 </button>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="lg:hidden flex items-center gap-2"
+                                    onClick={() => setFiltersOpen((open) => !open)}
+                                    title={filtersOpen ? "Hide filters" : "Show filters"}
+                                >
+                                    {filtersOpen ? "Hide filters" : "Filter"}
+                                </Button>
                             </div>
 
                             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">

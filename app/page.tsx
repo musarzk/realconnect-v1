@@ -87,6 +87,7 @@ export default async function SearchPage(props: {
 
     properties = docs.map((d) => ({
       ...normalize(d),
+      image: d.images?.[0] ?? "/placeholder.svg",
       ownerAvatar: d.ownerId ? ownerMap[d.ownerId.toString()] : undefined,
     }));
   } catch (error) {

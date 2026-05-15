@@ -22,8 +22,8 @@ export function Breadcrumbs() {
             className="flex items-center hover:text-primary transition-colors"
           >
             <Home className="h-4 w-4" />
-            <span className="sr-only">Home</span>
-          </Link>
+            <span className="sr-only">Home1</span>
+          </Link>a
         </li>
         
         {paths.map((path, index) => {

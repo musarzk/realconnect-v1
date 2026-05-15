@@ -1,142 +1,404 @@
-import React, { useState, useEffect } from "react"
-import { Search, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/utils"
+/* =========================================================
+   IMPROVED SMOOTH STICKY HERO SEARCH
+   - smoother compact transition
+   - reduced jumpiness
+   - added top margin
+   - optimized scroll handling
+   - added transform animations
+========================================================= */
+
+"use client";
+
+import React, { useState, useEffect, useRef } from "react";
+import { Search, X } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
+
+/* =========================================================
+   BACKGROUND IMAGES
+========================================================= */
 
 const BACKGROUND_IMAGES = [
   "https://images.unsplash.com/photo-1600596542815-2a4d9f8770e7?q=80&w=2669&auto=format&fit=crop",
+
   "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2670&auto=format&fit=crop",
+
   "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2653&auto=format&fit=crop",
+
   "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2670&auto=format&fit=crop",
-]
+];
+
+/* =========================================================
+   TAB TYPES
+========================================================= */
+
+type TabType =
+  | "buy"
+  | "rent"
+  | "sell"
+  | "invest"
+  | "earn"
+  | "evaluate";
+
+/* =========================================================
+   PROPS
+========================================================= */
 
 interface HeroSearchProps {
-  onSearch: (filters: { location: string; type: string }) => void
+  onSearch: (filters: {
+    location: string;
+    type: string;
+  }) => void;
 }
 
-export function HeroSearch({ onSearch }: HeroSearchProps) {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const [activeTab, setActiveTab] = useState<"buy" | "rent" | "sell" | "pre-approval" | "just-sold" | "home-value">("buy")
-  const [searchValue, setSearchValue] = useState("")
-  const [isCompact, setIsCompact] = useState(false)
+/* =========================================================
+   COMPONENT
+========================================================= */
 
-  // Background image rotation
+export function HeroSearch({ onSearch }: HeroSearchProps) {
+  /* =====================================================
+     STATES
+  ===================================================== */
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const [activeTab, setActiveTab] = useState<TabType>("buy");
+
+  const [searchValue, setSearchValue] = useState("");
+
+  /*
+   Controls sticky compact mode
+  */
+  const [isCompact, setIsCompact] = useState(false);
+
+  /*
+   Used to prevent excessive rerenders during scroll
+  */
+  const ticking = useRef(false);
+
+  /* =====================================================
+     BACKGROUND IMAGE ROTATION
+  ===================================================== */
+
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % BACKGROUND_IMAGES.length)
-    }, 5000)
-    return () => clearInterval(interval)
-  }, [])
+      setCurrentImageIndex(
+        (prev) => (prev + 1) % BACKGROUND_IMAGES.length
+      );
+    }, 5000);
 
-  // Handle scroll for sticky/compact mode
+    return () => clearInterval(interval);
+  }, []);
+
+  /* =====================================================
+     SMOOTH STICKY SCROLL EFFECT
+  ===================================================== */
+
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY
-      // Threshold: when scroll passes ~100px, switch to compact
-      setIsCompact(scrollPosition > 100)
-    }
+      /*
+       Prevent too many scroll updates
+      */
+      if (!ticking.current) {
+        window.requestAnimationFrame(() => {
+          const scrollPosition = window.scrollY;
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+          /*
+           Increased threshold
+           prevents aggressive snapping
+          */
+          const shouldCompact = scrollPosition > 100;
+
+          /*
+           Only update state if changed
+           prevents unnecessary rerenders
+          */
+          setIsCompact((prev) => {
+            if (prev !== shouldCompact) {
+              return shouldCompact;
+            }
+            return prev;
+          });
+
+          ticking.current = false;
+        });
+
+        ticking.current = true;
+      }
+    };
+
+    /*
+     Passive improves performance
+    */
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  /* =====================================================
+     SEARCH HANDLER
+  ===================================================== */
 
   const handleSearch = (e?: React.FormEvent) => {
-    e?.preventDefault()
-    // Map tabs to filter types
-    let type = "all"
-    if (activeTab === "buy") type = "sale"
-    if (activeTab === "rent") type = "rent"
-    
+    e?.preventDefault();
+
+    let type = "all";
+
+    switch (activeTab) {
+      case "buy":
+        type = "sale";
+        break;
+
+      case "rent":
+        type = "rent";
+        break;
+
+      case "sell":
+        type = "sell";
+        break;
+
+      case "invest":
+        type = "investment";
+        break;
+
+      case "earn":
+        type = "earning";
+        break;
+
+      case "evaluate":
+        type = "valuation";
+        break;
+
+      default:
+        type = "all";
+    }
+
     onSearch({
-      location: searchValue,
+      location: searchValue.trim(),
       type,
-    })
-  }
+    });
+  };
+
+  /* =====================================================
+     CLEAR SEARCH
+  ===================================================== */
 
   const handleClear = () => {
-    setSearchValue("")
-    // Map tabs to filter types
-    let type = "all"
-    if (activeTab === "buy") type = "sale"
-    if (activeTab === "rent") type = "rent"
-    
+    setSearchValue("");
+
     onSearch({
       location: "",
-      type,
-    })
-  }
+      type: "all",
+    });
+  };
+
+  /* =====================================================
+     TAB CONFIG
+  ===================================================== */
+
+  const tabs: {
+    id: TabType;
+    label: string;
+  }[] = [
+    { id: "buy", label: "Buy" },
+    { id: "sell", label: "Sell" },
+    { id: "rent", label: "Rent" },
+    { id: "invest", label: "Invest" },
+    { id: "earn", label: "Earn" },
+    { id: "evaluate", label: "Evaluate" },
+  ];
+
+  /* =====================================================
+     JSX
+  ===================================================== */
 
   return (
     <>
-      {/* Placeholder to prevent layout shift when fixed */}
-      <div 
+      {/* =================================================
+          PLACEHOLDER SPACER
+      ================================================= */}
+
+      <div
         className={cn(
-          "w-full transition-all duration-0",
-          isCompact ? "h-[300px] sm:h-[400px]" : "h-0"
-        )} 
+          "w-full transition-all duration-500 ease-in-out",
+          isCompact
+            ? "h-[320px] sm:h-[420px]"
+            : "h-0"
+        )}
       />
 
-      <div 
+      {/* =================================================
+          HERO CONTAINER
+      ================================================= */}
+
+      <div
         className={cn(
-          "w-full flex flex-col items-center justify-center text-white overflow-hidden transition-all duration-500 ease-in-out z-40 shadow-md",
-          isCompact 
-            ? "fixed top-[64px] left-0 right-0 h-[80px] bg-primary/95 backdrop-blur-md" 
-            : "relative h-[300px] sm:h-[400px]"
+          /*
+           Base styles
+          */
+          "w-full flex flex-col items-center justify-center text-white overflow-hidden z-40",
+
+          /*
+           VERY smooth transitions
+          */
+          "transition-[height,transform,background-color,backdrop-filter,box-shadow,border-radius]",
+
+          "duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]",
+
+          /*
+           Compact sticky mode
+          */
+          isCompact
+            ? `
+              fixed
+              top-20
+              left-4
+              right-4
+              h-[85px]
+              rounded-2xl
+              bg-primary/85
+              backdrop-blur-xl
+              shadow-2xl
+              border
+              border-white/10
+            `
+            : `
+              relative
+              h-[320px]
+              sm:h-[420px]
+              rounded-none
+            `
         )}
       >
-        {/* Background Images - Fade out in compact mode */}
-        <div className={cn("absolute inset-0 transition-opacity duration-500", isCompact ? "opacity-0" : "opacity-100")}>
+        {/* =============================================
+            BACKGROUND IMAGES
+        ============================================== */}
+
+        <div
+          className={cn(
+            "absolute inset-0 transition-opacity duration-700",
+
+            isCompact
+              ? "opacity-0 scale-110"
+              : "opacity-100 scale-100"
+          )}
+        >
           {BACKGROUND_IMAGES.map((src, index) => (
             <div
               key={src}
               className={cn(
-                "absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out",
-                index === currentImageIndex ? "opacity-100" : "opacity-0"
+                "absolute inset-0 bg-cover bg-center transition-all duration-[2000ms] ease-in-out",
+
+                index === currentImageIndex
+                  ? "opacity-100 scale-100"
+                  : "opacity-0 scale-105"
               )}
-              style={{ backgroundImage: `url(${src})` }}
+              style={{
+                backgroundImage: `url(${src})`,
+              }}
             />
           ))}
-          {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-black/40" />
+
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black/45" />
         </div>
 
-        {/* Content */}
-        <div className={cn(
-          "relative z-10 w-full px-4 text-center transition-all duration-500 flex flex-col items-center",
-          isCompact ? "flex-row justify-between max-w-7xl mx-auto" : "max-w-4xl"
-        )}>
-          
-          {/* Title & Tabs - Hide in compact mode */}
-          <div className={cn(
-            "transition-all duration-300 overflow-hidden",
-            isCompact ? "h-0 opacity-0 w-0" : "h-auto opacity-100 w-full mb-4 sm:mb-6 pt-4 sm:pt-0"
-          )}>
-            <h1 className="text-xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-1 sm:mb-2 drop-shadow-md leading-[1.1] sm:leading-tight">
-              AI-powered Real Estate site 
-            </h1>
-            <h1 className="text-xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-6 md:mb-8 drop-shadow-md leading-[1.1] sm:leading-tight">
-               Trusted by industry players
+        {/* =============================================
+            CONTENT
+        ============================================== */}
+
+        <div
+          className={cn(
+            "relative z-10 w-full px-4 transition-all duration-700 ease-out",
+
+            isCompact
+              ? `
+                flex
+                flex-row
+                items-center
+                justify-center
+                h-full
+                max-w-6xl
+                mx-auto
+              `
+              : `
+                flex
+                flex-col
+                items-center
+                justify-center
+                text-center
+                max-w-4xl
+                h-full
+                mx-auto
+              `
+          )}
+        >
+          {/* =========================================
+              HERO TEXT + TABS
+          ========================================== */}
+
+          <div
+            className={cn(
+              "transition-all duration-500 overflow-hidden",
+
+              isCompact
+                ? `
+                  opacity-0
+                  scale-95
+                  h-0
+                  w-0
+                  -translate-y-4
+                `
+                : `
+                  opacity-100
+                  scale-100
+                  w-full
+                  mb-6
+                  translate-y-0
+                `
+            )}
+          >
+            {/* MAIN TITLE */}
+
+            <h1 className="text-2xl sm:text-5xl lg:text-6xl font-bold mb-3 drop-shadow-xl">
+              AI-powered Real Estate Site
             </h1>
 
-            {/* Navigation Tabs */}
-            <div className="flex flex-wrap justify-center gap-3 sm:gap-6 mb-4 sm:mb-6 text-xs sm:text-base font-medium">
-              {[
-                { id: "buy", label: "Buy" },
-                { id: "sell", label: "Sell" },
-                { id: "rent", label: "Rent" },
-                { id: "invest", label: "Invest" },
-                { id: "Earn", label: "Earn" },
-                { id: "Evaluate", label: "Evaluate" },
-              ].map((tab) => (
+            <h2 className="text-xl sm:text-4xl lg:text-5xl font-bold mb-8 drop-shadow-xl">
+              Trusted by Industry Players
+            </h2>
+
+            {/* =====================================
+                TABS
+            ====================================== */}
+
+            <div className="flex flex-wrap justify-center gap-4 sm:gap-7 text-sm sm:text-base font-medium">
+              {tabs.map((tab) => (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
+                  type="button"
+                  aria-label={tab.label}
+                  onClick={() => setActiveTab(tab.id)}
                   className={cn(
-                    "relative pb-0.5 sm:pb-1 transition-colors hover:text-white/80 leading-none",
+                    "relative pb-1 transition-all duration-300",
+
                     activeTab === tab.id
-                      ? "text-white after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-white"
-                      : "text-white/90"
+                      ? `
+                        text-white
+                        after:absolute
+                        after:left-0
+                        after:bottom-0
+                        after:w-full
+                        after:h-0.5
+                        after:bg-white
+                      `
+                      : "text-white/80 hover:text-white"
                   )}
                 >
                   {tab.label}
@@ -145,40 +407,107 @@ export function HeroSearch({ onSearch }: HeroSearchProps) {
             </div>
           </div>
 
-          {/* Search Bar */}
-          <form onSubmit={handleSearch} className={cn(
-            "relative transition-all duration-500",
-            isCompact ? "w-full max-w-3xl mx-auto" : "w-full max-w-2xl mx-auto"
-          )}>
+          {/* =========================================
+              SEARCH BAR
+          ========================================== */}
+
+          <form
+            onSubmit={handleSearch}
+            className={cn(
+              "relative transition-all duration-700 ease-out",
+
+              isCompact
+                ? `
+                  w-full
+                  max-w-4xl
+                  scale-100
+                `
+                : `
+                  w-full
+                  max-w-2xl
+                `
+            )}
+          >
             <div className="relative flex items-center">
+              {/* SEARCH INPUT */}
+
               <Input
                 type="text"
                 placeholder="Address, City or Neighborhood"
-                className={cn(
-                  "w-full pl-6 pr-24 rounded-full bg-white text-gray-900 placeholder:text-gray-600 border-none shadow-lg focus-visible:ring-0 text-base transition-all duration-300",
-                  isCompact ? "h-12" : "h-14"
-                )}
+                aria-label="Search location"
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
+                className={cn(
+                  `
+                  w-full
+                  rounded-full
+                  bg-white
+                  text-gray-900
+                  placeholder:text-gray-500
+                  border-none
+                  shadow-2xl
+                  transition-all
+                  duration-500
+                  focus-visible:ring-0
+                  `,
+
+                  isCompact
+                    ? `
+                      h-12
+                      pl-6
+                      pr-24
+                      text-sm
+                    `
+                    : `
+                      h-14
+                      pl-7
+                      pr-28
+                      text-base
+                    `
+                )}
               />
+
+              {/* CLEAR BUTTON */}
+
               {searchValue && (
                 <button
                   type="button"
+                  aria-label="Clear search"
                   onClick={handleClear}
                   className={cn(
-                    "absolute p-2 text-gray-600 hover:text-gray-700 transition-colors",
-                    isCompact ? "right-12" : "right-14"
+                    "absolute text-gray-500 hover:text-gray-700 transition-colors",
+
+                    isCompact
+                      ? "right-14"
+                      : "right-16"
                   )}
                 >
                   <X className="h-5 w-5" />
                 </button>
               )}
+
+              {/* SEARCH BUTTON */}
+
               <Button
                 type="submit"
                 size="icon"
+                aria-label="Search"
                 className={cn(
-                  "absolute right-2 rounded-full bg-red-600 hover:bg-red-700 text-white transition-all duration-300",
-                  isCompact ? "h-9 w-9" : "h-10 w-10"
+                  `
+                  absolute
+                  right-2
+                  rounded-full
+                  bg-red-600
+                  hover:bg-red-700
+                  text-white
+                  transition-all
+                  duration-500
+                  shadow-lg
+                  `,
+
+                  isCompact
+                    ? "h-9 w-9"
+                    : "h-10 w-10"
                 )}
               >
                 <Search className="h-5 w-5" />
@@ -188,5 +517,5 @@ export function HeroSearch({ onSearch }: HeroSearchProps) {
         </div>
       </div>
     </>
-  )
+  );
 }
