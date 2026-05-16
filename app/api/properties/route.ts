@@ -157,7 +157,7 @@ export async function GET(req: NextRequest) {
         status: 1,
         ownerId: 1,
       })
-      .sort(sortQuery)
+      .sort(sortQuery as any)
       .skip(skip)
       .limit(limit)
       .toArray();
