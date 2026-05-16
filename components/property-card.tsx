@@ -47,12 +47,11 @@ export function PropertyCard({
   return (
     <Link href={`/property/${id}`}>
       <Card
-        className={`overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer h-full flex flex-col 
-          ${viewMode === "list" ? "sm:flex-row " : ""}
-          !p-0 !m-0
+        className={`overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer h-full flex flex-col
+          ${viewMode === "list" ? "sm:flex-row" : ""}
+          !p-0 ${viewMode === "list" ? "mb-6" : "!m-0"}
           rounded-b-none
           rounded-t-0.09
-          
           ${status === "sold" ? "opacity-75" : ""}
         `}
       >

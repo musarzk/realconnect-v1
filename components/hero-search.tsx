@@ -87,7 +87,7 @@ export function HeroSearch({ onSearch }: HeroSearchProps) {
       setCurrentImageIndex(
         (prev) => (prev + 1) % BACKGROUND_IMAGES.length
       );
-    }, 5000);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, []);
@@ -109,7 +109,7 @@ export function HeroSearch({ onSearch }: HeroSearchProps) {
            Increased threshold
            prevents aggressive snapping
           */
-          const shouldCompact = scrollPosition > 100;
+          const shouldCompact = scrollPosition > 90;
 
           /*
            Only update state if changed
@@ -226,9 +226,9 @@ export function HeroSearch({ onSearch }: HeroSearchProps) {
 
       <div
         className={cn(
-          "w-full transition-all duration-500 ease-in-out",
+          "w-full transition-all duration-700 ease-in-out",
           isCompact
-            ? "h-[320px] sm:h-[420px]"
+            ? " w-full h-[320px] sm:h-[420px]"
             : "h-0"
         )}
       />
@@ -258,14 +258,15 @@ export function HeroSearch({ onSearch }: HeroSearchProps) {
             ? `
               fixed
               top-20
-              left-4
-              right-4
+              left-0
+              right-0
               h-[85px]
-              rounded-2xl
+              rounded-none
               bg-primary/85
               backdrop-blur-xl
               shadow-2xl
-              border
+              border-t
+              border-b
               border-white/10
             `
             : `
@@ -350,7 +351,7 @@ export function HeroSearch({ onSearch }: HeroSearchProps) {
               isCompact
                 ? `
                   opacity-0
-                  scale-95
+                  scale-85
                   h-0
                   w-0
                   -translate-y-4

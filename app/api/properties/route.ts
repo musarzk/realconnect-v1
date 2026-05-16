@@ -93,9 +93,10 @@ export async function GET(req: NextRequest) {
     const url = new URL(req.url);
     const q = url.searchParams;
     const status = q.get("status") ?? undefined;
-    const limit = Math.min(Math.max(Number(q.get("limit") || 50), 1), 200);
+    const limit = Math.min(Math.max(Number(q.get("limit") || 12), 1), 200);
     const page = Math.max(Number(q.get("page") || 1), 1);
     const skip = (page - 1) * limit;
+    const sortBy = q.get("sortBy");
 
     const location = q.get("location");
     const type = q.get("type");
@@ -117,7 +118,7 @@ export async function GET(req: NextRequest) {
       filter.listingType = type;
     }
     if (propertyType && propertyType !== "all") {
-      filter.type = propertyType;
+      filter.propertyType = propertyType;
     }
     if (beds) {
       filter.beds = { $gte: Number(beds) };
@@ -129,8 +130,37 @@ export async function GET(req: NextRequest) {
       if (priceMax) filter.price.$lte = Number(priceMax);
     }
 
+    const sortQuery: Record<string, number> = { createdAt: -1 };
+    if (sortBy === "priceLow") sortQuery.price = 1;
+    else if (sortBy === "priceHigh") sortQuery.price = -1;
+    else if (sortBy === "rating") sortQuery.rating = -1;
+    else if (sortBy === "featured") sortQuery.featured = -1;
+
     const total = await coll.countDocuments(filter);
-    const docs = await coll.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit).toArray();
+    const docs = await coll
+      .find(filter)
+      .project({
+        _id: 1,
+        title: 1,
+        price: 1,
+        priceUsd: 1,
+        location: 1,
+        images: 1,
+        beds: 1,
+        baths: 1,
+        sqft: 1,
+        verified: 1,
+        rating: 1,
+        listingType: 1,
+        propertyType: 1,
+        featured: 1,
+        status: 1,
+        ownerId: 1,
+      })
+      .sort(sortQuery)
+      .skip(skip)
+      .limit(limit)
+      .toArray();
 
     // Populate owner avatar
     const ownerIds = [...new Set(docs.map(d => d.ownerId).filter(id => id))];

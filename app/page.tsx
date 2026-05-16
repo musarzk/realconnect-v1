@@ -6,10 +6,8 @@ import { HomeSearchClient } from "@/components/home-search-client";
 import { getPropertiesCollection, getUsersCollection } from "@/lib/db";
 import { ObjectId } from "mongodb";
 
-// Force dynamic rendering if we want fresh data on every request, 
-// or use revalidate for ISR. for "super fast", caching is good, but 
-// let's start with dynamic to ensure data is correct.
-export const dynamic = "force-dynamic";
+// Use incremental caching for faster page loads while still refreshing data every minute.
+export const revalidate = 60;
 
 type Property = {
   _id: string;
@@ -51,16 +49,37 @@ export default async function SearchPage(props: {
   const searchParams = await props.searchParams;
   
   // 1. Fetch properties directly from DB (Server Side)
-  // We fetch ALL approved properties to support client-side filtering (matching original behavior).
-  // For massive datasets, we should switch to server-side filtering.
+  // We fetch only the first page of approved properties and use server-side pagination.
   let properties: Property[] = [];
+  let total = 0;
   try {
     const coll = await getPropertiesCollection();
-    // Fetch only approved properties
+    total = await coll.countDocuments({ status: "approved" });
+
+    // Fetch only approved properties with only the fields we actually render.
     const docs = await coll
       .find({ status: "approved" })
+      .project({
+        _id: 1,
+        title: 1,
+        price: 1,
+        priceUsd: 1,
+        location: 1,
+        images: 1,
+        beds: 1,
+        baths: 1,
+        sqft: 1,
+        verified: 1,
+        rating: 1,
+        type: 1,
+        listingType: 1,
+        propertyType: 1,
+        featured: 1,
+        status: 1,
+        ownerId: 1,
+      })
       .sort({ createdAt: -1 })
-      .limit(24)
+      .limit(12)
       .toArray();
 
     // 2. Populate Owners
@@ -115,6 +134,7 @@ export default async function SearchPage(props: {
       {/* Pass data to Client Component */}
       <HomeSearchClient 
         initialProperties={properties} 
+        initialTotal={total}
         initialFilters={initialFilters} 
       />
 

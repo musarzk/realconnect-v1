@@ -33,6 +33,7 @@ type Property = {
 
 interface HomeSearchClientProps {
     initialProperties: Property[];
+    initialTotal?: number;
     initialFilters?: {
         location?: string;
         type?: string; // listing type
@@ -43,9 +44,10 @@ interface HomeSearchClientProps {
     };
 }
 
-export function HomeSearchClient({ initialProperties, initialFilters }: HomeSearchClientProps) {
+export function HomeSearchClient({ initialProperties, initialTotal = 0, initialFilters }: HomeSearchClientProps) {
     // State initialization
     const [properties, setProperties] = useState<Property[]>(initialProperties);
+    const [totalResults, setTotalResults] = useState<number>(initialTotal || initialProperties.length);
     const [isInitialLoad, setIsInitialLoad] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -64,8 +66,8 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
         propertyType: initialFilters?.propertyType || "all",
     });
 
-    // Fetch properties from API when filters change
-    const fetchProperties = async (currentFilters: typeof filters) => {
+    // Fetch properties from API with server-side filtering and pagination.
+    const fetchProperties = async (currentFilters: typeof filters, page = 1, sortOption = sortBy) => {
         setIsLoading(true);
         try {
             const params = new URLSearchParams();
@@ -75,15 +77,16 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
             if (currentFilters.beds) params.append("beds", currentFilters.beds);
             if (currentFilters.priceMin) params.append("priceMin", currentFilters.priceMin);
             if (currentFilters.priceMax) params.append("priceMax", currentFilters.priceMax);
-            
-            // We fetch a bit more than itemsPerPage to allow some client-side sorting/filtering if needed,
-            // but primarily we'll rely on server-side filters.
-            params.append("limit", "100"); 
+            if (sortOption) params.append("sortBy", sortOption);
+            params.append("page", String(page));
+            params.append("limit", String(itemsPerPage));
 
             const res = await fetch(`/api/properties?${params.toString()}`);
             if (res.ok) {
                 const data = await res.json();
                 setProperties(data.properties || []);
+                setTotalResults(typeof data.pagination?.total === "number" ? data.pagination.total : 0);
+                setCurrentPage(data.pagination?.page ?? page);
             }
         } catch (error) {
             console.error("Failed to fetch properties:", error);
@@ -92,74 +95,54 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
         }
     };
 
-    const handleFilterChange = (newFilters: typeof filters) => {
+    const setFiltersAndFetch = async (newFilters: typeof filters, page = 1) => {
         setFilters(newFilters);
-        setCurrentPage(1);
+        setCurrentPage(page);
         setIsInitialLoad(false);
-        fetchProperties(newFilters);
+        await fetchProperties(newFilters, page);
     };
 
-    // Filter + sort logic (client-side for the current fetched batch)
-    const filteredAndSortedProperties = useMemo(() => {
-        const list = Array.isArray(properties) ? properties : [];
+    const applyFilters = () => {
+        setFiltersAndFetch(filters, 1);
+    };
 
-        // If we haven't changed filters yet, use the initial properties (already filtered by "approved" status on server)
-        // If filters changed, we've already fetched the filtered list from the server.
-        // We still apply client-side filtering as a safety net or for any filters not yet implemented on server.
-        const result = list.filter((property) => {
-            const matchesLocation =
-                !filters.location || (property.location ?? "").toLowerCase().includes(filters.location.toLowerCase());
-            const matchesType = filters.type === "all" || property.listingType === filters.type;
-            const matchesBeds = !filters.beds || (property.beds ?? 0) >= Number.parseInt(filters.beds);
-            const matchesMinPrice = !filters.priceMin || property.price >= Number.parseInt(filters.priceMin);
-            const matchesMaxPrice = !filters.priceMax || property.price <= Number.parseInt(filters.priceMax);
-            const matchesPropertyType = filters.propertyType === "all" || property.propertyType === filters.propertyType;
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+        fetchProperties(filters, page);
+    };
 
-            return matchesLocation && matchesType && matchesBeds && matchesMinPrice && matchesMaxPrice && matchesPropertyType;
-        });
+    const handleSortChange = (value: string) => {
+        setSortBy(value);
+        fetchProperties(filters, currentPage, value);
+    };
 
-        // Sorting
-        if (sortBy === "priceLow") {
-            result.sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
-        } else if (sortBy === "priceHigh") {
-            result.sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
-        } else if (sortBy === "rating") {
-            result.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
-        } else if (sortBy === "featured") {
-            result.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
-        }
+    // Server-side filtering and pagination. The API returns only the current page of results.
+    const visibleProperties = useMemo(() => properties, [properties]);
 
-        return result;
-    }, [properties, filters, sortBy]);
-
-    // Pagination
-    const totalPages = Math.max(1, Math.ceil(filteredAndSortedProperties.length / itemsPerPage));
-    const paginatedProperties = useMemo(() => {
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        return filteredAndSortedProperties.slice(startIndex, startIndex + itemsPerPage);
-    }, [filteredAndSortedProperties, currentPage]);
+    const totalPages = Math.max(1, Math.ceil(totalResults / itemsPerPage));
 
 
     return (
         <>
             <HeroSearch
                 onSearch={(initialFilters) => {
-                    handleFilterChange({
+                    const combinedFilters = {
                         ...filters,
                         ...initialFilters,
                         priceMin: "",
                         priceMax: "",
                         beds: "",
                         propertyType: "all",
-                    } as any)
+                    } as typeof filters;
+                    setFiltersAndFetch(combinedFilters, 1);
                 }}
             />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 pt-12 flex flex-col items-center">
                 <div className="mb-8 text-center w-full relative">
-                    <p className="text-xl font-semibold text-foreground">
-                        Showing {filteredAndSortedProperties.length} approved properties
-                        {isInitialLoad && initialProperties.length === 24 && (
+                    <p className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-foreground">
+                        Showing {properties.length} of {totalResults} approved properties
+                        {isInitialLoad && initialProperties.length === 12 && (
                             <span className="text-xs text-muted-foreground ml-2">(Initial load limit)</span>
                         )}
                     </p>
@@ -194,7 +177,7 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
                                     <select
                                         className="w-full px-3 py-2 border border-border rounded-lg bg-background"
                                         value={filters.type}
-                                        onChange={(e) => handleFilterChange({ ...filters, type: e.target.value })}
+                                        onChange={(e) => setFilters({ ...filters, type: e.target.value })}
                                     >
                                         <option value="all">All</option>
                                         <option value="sale">For Sale</option>
@@ -207,7 +190,7 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
                                     <Input
                                         placeholder="City or area"
                                         value={filters.location}
-                                        onChange={(e) => handleFilterChange({ ...filters, location: e.target.value })}
+                                        onChange={(e) => setFilters({ ...filters, location: e.target.value })}
                                     />
                                 </div>
 
@@ -217,7 +200,7 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
                                         type="number"
                                         placeholder="Min"
                                         value={filters.priceMin}
-                                        onChange={(e) => handleFilterChange({ ...filters, priceMin: e.target.value })}
+                                        onChange={(e) => setFilters({ ...filters, priceMin: e.target.value })}
                                     />
                                 </div>
                                 <div>
@@ -226,7 +209,7 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
                                         type="number"
                                         placeholder="Max"
                                         value={filters.priceMax}
-                                        onChange={(e) => handleFilterChange({ ...filters, priceMax: e.target.value })}
+                                        onChange={(e) => setFilters({ ...filters, priceMax: e.target.value })}
                                     />
                                 </div>
 
@@ -235,7 +218,7 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
                                     <select
                                         className="w-full px-3 py-2 border border-border rounded-lg bg-background"
                                         value={filters.beds}
-                                        onChange={(e) => handleFilterChange({ ...filters, beds: e.target.value })}
+                                        onChange={(e) => setFilters({ ...filters, beds: e.target.value })}
                                     >
                                         <option value="">Any</option>
                                         <option value="1">1+</option>
@@ -250,7 +233,7 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
                                     <select
                                         className="w-full px-3 py-2 border border-border rounded-lg bg-background"
                                         value={filters.propertyType}
-                                        onChange={(e) => handleFilterChange({ ...filters, propertyType: e.target.value })}
+                                        onChange={(e) => setFilters({ ...filters, propertyType: e.target.value })}
                                     >
                                         <option value="all">All Types</option>
                                         <option value="apartment">Apartment</option>
@@ -260,19 +243,19 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
                                     </select>
                                 </div>
 
-                                <Button className="w-full">Apply Filters</Button>
+                                <Button className="w-full" onClick={applyFilters}>Apply Filters</Button>
                                 <Button
                                     variant="outline"
                                     className="w-full bg-transparent"
                                     onClick={() =>
-                                        handleFilterChange({
+                                        setFiltersAndFetch({
                                             location: "",
                                             priceMin: "",
                                             priceMax: "",
                                             beds: "",
                                             type: "all",
                                             propertyType: "all",
-                                        })
+                                        }, 1)
                                     }
                                 >
                                     Clear Filters
@@ -283,32 +266,35 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
 
                     {/* Properties Grid */}
                     <div className="lg:col-span-3">
-                        <div className="flex justify-between items-center mb-6">
-                            <div className="flex gap-2 items-center">
-                                <button
-                                    type="button"
-                                    title="Grid view"
-                                    aria-label="Grid view"
-                                    onClick={() => setViewMode("grid")}
-                                    className={`p-2 rounded-lg transition-colors ${viewMode === "grid"
-                                        ? "bg-primary text-primary-foreground"
-                                        : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                                        }`}
-                                >
-                                    <Grid3x3 className="h-4 w-4" />
-                                </button>
-                                <button
-                                    type="button"
-                                    title="List view"
-                                    aria-label="List view"
-                                    onClick={() => setViewMode("list")}
-                                    className={`p-2 rounded-lg transition-colors ${viewMode === "list"
-                                        ? "bg-primary text-primary-foreground"
-                                        : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                                        }`}
-                                >
-                                    <List className="h-4 w-4" />
-                                </button>
+                        <div className="flex flex-col gap-3 lg:flex-row lg:justify-between lg:items-center mb-6">
+                            <div className="flex items-center justify-between w-full gap-2 lg:w-auto">
+                                <div className="hidden lg:flex gap-2 items-center">
+                                    <button
+                                        type="button"
+                                        title="Grid view"
+                                        aria-label="Grid view"
+                                        onClick={() => setViewMode("grid")}
+                                        className={`p-2 rounded-lg transition-colors ${viewMode === "grid"
+                                            ? "bg-primary text-primary-foreground"
+                                            : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                                            }`}
+                                    >
+                                        <Grid3x3 className="h-4 w-4" />
+                                    </button>
+                                    <button
+                                        type="button"
+                                        title="List view"
+                                        aria-label="List view"
+                                        onClick={() => setViewMode("list")}
+                                        className={`p-2 rounded-lg transition-colors ${viewMode === "list"
+                                            ? "bg-primary text-primary-foreground"
+                                            : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                                            }`}
+                                    >
+                                        <List className="h-4 w-4" />
+                                    </button>
+                                </div>
+
                                 <Button
                                     variant="outline"
                                     size="sm"
@@ -320,13 +306,13 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
                                 </Button>
                             </div>
 
-                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                            <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
                                 <label className="text-xs sm:text-sm font-medium whitespace-nowrap">Sort by:</label>
-                                <div className="relative w-full sm:w-auto">
+                                <div className="relative w-full sm:w-auto max-w-[220px]">
                                     <select
                                         value={sortBy}
-                                        onChange={(e) => setSortBy(e.target.value)}
-                                        className="w-full sm:w-auto px-3 py-2 rounded-lg bg-gray-200 border-none appearance-none focus:outline-none pr-8 text-sm"
+                                        onChange={(e) => handleSortChange(e.target.value)}
+                                        className="w-full sm:w-[220px] px-3 py-2 rounded-lg bg-gray-200 border-none appearance-none focus:outline-none pr-8 text-sm"
                                     >
                                         <option value="featured">Featured</option>
                                         <option value="priceLow">Price: Low to High</option>
@@ -338,19 +324,19 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
                             </div>
                         </div>
 
-                        {filteredAndSortedProperties.length === 0 ? (
+                        {properties.length === 0 ? (
                             <Card className="p-12 text-center">
                                 <p className="text-gray-600 font-medium mb-4">No approved properties found.</p>
                                 <Button
                                     onClick={() =>
-                                        handleFilterChange({
+                                        setFiltersAndFetch({
                                             location: "",
                                             priceMin: "",
                                             priceMax: "",
                                             beds: "",
                                             type: "all",
                                             propertyType: "all",
-                                        })
+                                        }, 1)
                                     }
                                 >
                                     Clear Filters
@@ -365,7 +351,7 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
                                             : "space-y-6"
                                     }
                                 >
-                                    {paginatedProperties.map((property) => (
+                                    {visibleProperties.map((property) => (
                                         <PropertyCard
                                             key={property._id}
                                             id={property._id}
@@ -390,8 +376,8 @@ export function HomeSearchClient({ initialProperties, initialFilters }: HomeSear
                                 <Pagination
                                     currentPage={currentPage}
                                     totalPages={totalPages}
-                                    onPageChange={setCurrentPage}
-                                    totalItems={filteredAndSortedProperties.length}
+                                    onPageChange={handlePageChange}
+                                    totalItems={totalResults}
                                     itemsPerPage={itemsPerPage}
                                 />
                             </>
