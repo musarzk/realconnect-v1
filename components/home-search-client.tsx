@@ -32,6 +32,7 @@ type Property = {
 
 interface HomeSearchClientProps {
   initialProperties: Property[];
+  initialTotal?: number;
   initialFilters?: {
     location?: string;
     type?: string; // listing type
